@@ -1,11 +1,10 @@
 package hu.crs.codewars.findmissingletter;
 
-import static org.junit.Assert.assertEquals;
-
-import hu.crs.codewars.findmissingletter.Kata;
 import org.junit.Test;
 
-public class SolutionTest {
+import static org.junit.Assert.assertEquals;
+
+public class KataTest {
     @Test
     public void exampleTests() {
         assertEquals('e', Kata.findMissingLetter(new char[] { 'a', 'b', 'c', 'd', 'f' }));
