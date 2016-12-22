@@ -1,8 +1,7 @@
-package hu.crs;
+package hu.crs.codewars.findmissingletter;
 
-public class Kata {
-
-    public static char findMissingLetter(char[] array) {
+class Kata {
+    static char findMissingLetter(char[] array) {
         int previous = array[0];
         for (int i = 1; i < array.length; i++) {
             int current = array[i];
