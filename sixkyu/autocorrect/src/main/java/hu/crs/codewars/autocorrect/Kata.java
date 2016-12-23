@@ -1,5 +1,9 @@
 package hu.crs.codewars.autocorrect;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 class Kata {
 
     private static final String AUTO_CORRECTED_STRING = "your sister";
@@ -21,8 +25,9 @@ class Kata {
     }
 
     private static String autocorrectWord(String word) {
-        String result = word.replaceAll("^[uU]$", AUTO_CORRECTED_STRING);
-        result = result.replaceAll("^[yY][oO][uU]+$", AUTO_CORRECTED_STRING);
-        return result;
+        return Stream.of(word)
+                .map(s -> s.replaceAll("^[uU]$", AUTO_CORRECTED_STRING))
+                .map(s -> s.replaceAll("^[yY][oO][uU]+$", AUTO_CORRECTED_STRING))
+                .collect(Collectors.joining());
     }
 }
