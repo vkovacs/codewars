@@ -2,15 +2,15 @@ package hu.crs.codewars.autocorrect;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 class Kata {
 
     private static final String AUTO_CORRECTED_STRING = "your sister";
+    private static final String DELIMITER_CHARACTERS = " ,!?'=";
 
     static String autocorrect(String input) {
-        String[] words = input.split("[ ,!?'=]+");
-        String[] delimiters = input.split("[a-zA-Z<0-3]+");
+        String[] words = input.split("["+DELIMITER_CHARACTERS+"]+");
+        String[] delimiters = input.split("[^"+ DELIMITER_CHARACTERS +"]+");
 
         StringBuilder result = new StringBuilder();
 
