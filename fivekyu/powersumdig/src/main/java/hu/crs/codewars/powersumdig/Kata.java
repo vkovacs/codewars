@@ -1,40 +1,57 @@
 package hu.crs.codewars.powersumdig;
 
+import java.time.LocalTime;
+
+import static java.time.temporal.ChronoUnit.MILLIS;
+
 public class Kata {
     public static long powerSumDigTerm(int n) {
-        int currentNCount = 0;
-        int i = 10;
-        while (currentNCount <= n) {
-            int sumOfNumbersI = getSumOfNumbers(i);
-            if (ifPower(i, sumOfNumbersI)) {
-                currentNCount++;
-                if (currentNCount == n) {
-                    return i;
+        int resultNumberCount = 0;
+        long currentNumberToCheck = 10;
+        LocalTime previousTime = LocalTime.now();
+        while (resultNumberCount <= n) {
+            long sumOfDigits = sumOfDigits(currentNumberToCheck);
+            if (isProductOf(currentNumberToCheck, sumOfDigits)) {
+                resultNumberCount++;
+                LocalTime now = LocalTime.now();
+                System.out.println(previousTime.until(now, MILLIS) + " " + resultNumberCount + ": " + currentNumberToCheck);
+                previousTime = now;
+
+                if (resultNumberCount == n) {
+                    return currentNumberToCheck;
                 }
             }
-            i++;
+            currentNumberToCheck++;
         }
         throw new RuntimeException();
     }
 
-    private static int getSumOfNumbers(int number) {
-        int sum = 0;
-        String numberString = String.valueOf(number);
-        for (int i = 0; i < numberString.length(); i++) {
-            sum += Integer.parseInt(String.valueOf(numberString.charAt(i)));
+    //for 16th resultNumberCount it's 9.8 sec from 25 sec
+    private static long sumOfDigits(long number) {
+        long numberOfDigits = 0;
+        while (number > 0) {
+            numberOfDigits = numberOfDigits + number % 10;
+            number = number / 10;
         }
-        return sum;
+        return numberOfDigits;
     }
 
-    private static boolean ifPower(int number, int base) {
+    private static boolean isProductOf(long product, long base) {
         if (base == 1) {
-            return number == base;
+            return product == base;
         }
-        int i = 0;
-        while (Math.pow(base, i) < number) {
-            i++;
+        //increase computation speed for 10+ resultNumberCount
+        //eg for 14th it's 3838 ms from 19403 ms
+        if ((product % base) != 0) {
+            return false;
         }
 
-        return Math.pow(base, i) == number;
+        long tmpProduct = base;
+        //~ -5 sec for computataion speed for 16th resultNumberCount
+        while (tmpProduct < product) {
+            tmpProduct *= base;
+        }
+
+        return tmpProduct == product;
     }
 }
