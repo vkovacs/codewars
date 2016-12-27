@@ -1,57 +1,39 @@
 package hu.crs.codewars.powersumdig;
 
-import java.time.LocalTime;
-
-import static java.time.temporal.ChronoUnit.MILLIS;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Kata {
-    public static long powerSumDigTerm(int n) {
-        int resultNumberCount = 0;
-        long currentNumberToCheck = 10;
-        LocalTime previousTime = LocalTime.now();
-        while (resultNumberCount <= n) {
-            long sumOfDigits = sumOfDigits(currentNumberToCheck);
-            if (isProductOf(currentNumberToCheck, sumOfDigits)) {
-                resultNumberCount++;
-                LocalTime now = LocalTime.now();
-                System.out.println(previousTime.until(now, MILLIS) + " " + resultNumberCount + ": " + currentNumberToCheck);
-                previousTime = now;
+    private static final int MAX_POWER = 50;
+    private static final long MAX_NUMBER_TO_CHECK = 500;
 
-                if (resultNumberCount == n) {
-                    return currentNumberToCheck;
+    public static long powerSumDigTerm(int n) {
+        if (n < 1) {
+            throw new IllegalArgumentException();
+        }
+
+        List<Long> resultList = new ArrayList<>();
+
+        for (int i = 2; i < MAX_NUMBER_TO_CHECK; i++) {
+            for (int j=2; j < MAX_POWER; j++) {
+                long product = (long) Math.pow(i, j);
+                if (sumOfDigits(product) == i) {
+                    resultList.add(product);
                 }
             }
-            currentNumberToCheck++;
         }
-        throw new RuntimeException();
+        Collections.sort(resultList);
+
+        return resultList.get(n - 1);
     }
 
-    //for 16th resultNumberCount it's 9.8 sec from 25 sec
     private static long sumOfDigits(long number) {
-        long numberOfDigits = 0;
+        long sumOfDigits = 0;
         while (number > 0) {
-            numberOfDigits = numberOfDigits + number % 10;
+            sumOfDigits = sumOfDigits + number % 10;
             number = number / 10;
         }
-        return numberOfDigits;
-    }
-
-    private static boolean isProductOf(long product, long base) {
-        if (base == 1) {
-            return product == base;
-        }
-        //increase computation speed for 10+ resultNumberCount
-        //eg for 14th it's 3838 ms from 19403 ms
-        if ((product % base) != 0) {
-            return false;
-        }
-
-        long tmpProduct = base;
-        //~ -5 sec for computataion speed for 16th resultNumberCount
-        while (tmpProduct < product) {
-            tmpProduct *= base;
-        }
-
-        return tmpProduct == product;
+        return sumOfDigits;
     }
 }
