@@ -18,3 +18,5 @@ as a String!
 Note: 0! is always equal to 1. Negative values should return null or an empty string(in C++).
 
 For more on Factorials : http://en.wikipedia.org/wiki/Factorial
+
+https://www.codewars.com/kata/557f6437bf8dcdd135000010
