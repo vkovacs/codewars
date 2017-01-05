@@ -11,6 +11,7 @@
   <modules>
     <module>sixkyu</module>
     <module>fivekyu</module>
+    <module>fourkyu</module>
   </modules>
 
   <build>
