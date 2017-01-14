@@ -15,6 +15,7 @@
     <module>findmissingletter</module>
     <module>autocorrect</module>
       <module>sumsquareddivisors</module>
+    <module>worda10n</module>
   </modules>
 
 
