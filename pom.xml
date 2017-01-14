@@ -13,6 +13,7 @@
     <module>fivekyu</module>
     <module>fourkyu</module>
     <module>threekyu</module>
+      <module>sevenkyu</module>
   </modules>
 
   <build>
