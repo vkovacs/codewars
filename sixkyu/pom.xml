@@ -14,6 +14,7 @@
   <modules>
     <module>findmissingletter</module>
     <module>autocorrect</module>
+      <module>sumsquareddivisors</module>
   </modules>
 
 
