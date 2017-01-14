@@ -11,9 +11,6 @@
 
   <artifactId>threekyu</artifactId>
   <packaging>pom</packaging>
-  <modules>
-    <module>didyoumean</module>
-  </modules>
 
 
 </project>

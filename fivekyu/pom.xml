@@ -14,9 +14,8 @@
     <modules>
         <module>caesarcipher</module>
         <module>powersumdig</module>
-      <module>emirps</module>
+        <module>emirps</module>
         <module>littlesecrets</module>
-      <module>trailingzeros</module>
     </modules>
 
 
