@@ -1,72 +1,76 @@
 package hu.crs.codewars.josephussurvivor;
 
-import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Kata {
     public static int josephusSurvivor(final int n, final int k) {
-        CircleList<Integer> circleList = new CircleList<>();
+        CircleList<Integer> circleList = new CircleList<>(IntStream.of(IntStream.range(1, n + 1).toArray()).boxed().collect(Collectors.toList()));
 
-        for (int i = 1; i <= n; i++) {
-            circleList.add(i);
-        }
-        circleList.init();
-
-        int i = 1;
-        Iterator iterator = circleList.iterator();
-        while (iterator.hasNext()) {
-            if (i == k) {
-                i = 1;
-                circleList.remove();
-            }
+        int i = 0;
+        while (!circleList.isOneNodeList()) {
             i++;
+            if (i == k) {
+                i = 0;
+                circleList.remove();
+            } else {
+                circleList.next();
+            }
         }
 
-        return circleList.getElement();
+        return circleList.getNode().element;
     }
 
-    private static class CircleList<E> implements Iterable<E> {
+    private static class CircleList<E> {
+        Node<E> first;
         Node<E> node;
 
-        public void add(E element) {
+        CircleList(List<E> list) {
+            list.forEach(this::add);
+            initFirst();
+        }
+
+        private void add(E element) {
             if (node == null) {
                 node = new Node<>(element, null, null);
                 node.previous = node;
                 node.next = node;
+                first = node;
             } else {
-                Node<E> newNode = new Node<>(element, node, node.next);
+                Node<E> newNode = new Node<>(element, node, first);
                 node.next = newNode;
-
+                first.previous = newNode;
                 node = newNode;
             }
         }
 
-        public void remove() {
+        private void initFirst() {
+            node = first;
+        }
+
+        void remove() {
             node.previous.next = node.next;
             node.next.previous = node.previous;
-        }
-
-        public E getElement() {
-            return node.element;
-        }
-
-        public void init() {
+            if (node == first) {
+                first = node.next;
+            }
             node = node.next;
         }
 
-        @Override
-        public Iterator<E> iterator() {
-            return new Iterator<E>() {
-                @Override
-                public boolean hasNext() {
-                    return node.next != node;
-                }
-
-                @Override
-                public E next() {
-                    return node.next.element;
-                }
-            };
+        Node<E> getNode() {
+            return node;
         }
+
+        boolean isOneNodeList() {
+            return first.next == first;
+        }
+
+        Node<E> next() {
+            node = node.next;
+            return node;
+        }
+
     }
 
     private static class Node<E> {
@@ -74,7 +78,7 @@ public class Kata {
         Node<E> next;
         Node<E> previous;
 
-        public Node(E element, Node<E> previous, Node<E> next) {
+        Node(E element, Node<E> previous, Node<E> next) {
             this.element = element;
             this.next = next;
             this.previous = previous;
