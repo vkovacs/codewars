@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class KataTest {
+
     @Test
     public void test1() {
         josephusTest(7, 3, 4);
@@ -28,6 +29,16 @@ public class KataTest {
     @Test
     public void test5() {
         josephusTest(100, 1, 100);
+    }
+
+    @Test
+    public void test6() {
+        josephusTest(1, 1, 1);
+    }
+
+    @Test
+    public void test7() {
+        josephusTest(2, 1, 2);
     }
 
     private void josephusTest(final int n, final int k, final int result) {
