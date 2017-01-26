@@ -4,6 +4,9 @@ jdk:
 
 notifications:
   email: false
-  slack: crusader8-dev:uk1gzRxbMrjf6BGLtCWl1Wfd
-    on_success: change
-    on_failure: always
+
+  slack:
+    rooms:
+      - crusader8-dev:uk1gzRxbMrjf6BGLtCWl1Wfd#travis-ci
+    on_success: change # default: always
+    on_failure: always # default: always
