@@ -4,3 +4,4 @@ jdk:
 
 notifications:
   email: false
+  slack: crusader8-dev:uk1gzRxbMrjf6BGLtCWl1Wfd
