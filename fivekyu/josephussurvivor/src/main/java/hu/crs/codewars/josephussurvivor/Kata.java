@@ -1,5 +1,6 @@
 package hu.crs.codewars.josephussurvivor;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -9,20 +10,22 @@ public class Kata {
         CircleList<Integer> circleList = new CircleList<>(IntStream.of(IntStream.range(1, n + 1).toArray()).boxed().collect(Collectors.toList()));
 
         int i = 0;
-        while (!circleList.isOneNodeList()) {
+
+        Iterator<Integer> iterator = circleList.iterator();
+        while (iterator.hasNext()) {
             i++;
             if (i == k) {
                 i = 0;
-                circleList.remove();
+                iterator.remove();
             } else {
-                circleList.next();
+                iterator.next();
             }
         }
 
         return circleList.getNode().element;
     }
 
-    private static class CircleList<E> {
+    private static class CircleList<E> implements Iterable<E>{
         Node<E> first;
         Node<E> node;
 
@@ -49,28 +52,39 @@ public class Kata {
             node = first;
         }
 
-        void remove() {
-            node.previous.next = node.next;
-            node.next.previous = node.previous;
-            if (node == first) {
-                first = node.next;
-            }
-            node = node.next;
-        }
-
         Node<E> getNode() {
             return node;
         }
 
-        boolean isOneNodeList() {
-            return first.next == first;
-        }
+        @Override
+        public Iterator<E> iterator() {
+            return new Iterator<E>() {
+                /**
+                 * Next element of the circle list. In case it has only one element by convention it doesn't have next.
+                 * @return if has next element or not
+                 */
+                @Override
+                public boolean hasNext() {
+                    return first.next != first;
+                }
 
-        Node<E> next() {
-            node = node.next;
-            return node;
-        }
+                @Override
+                public E next() {
+                    node = node.next;
+                    return node.element;
+                }
 
+                @Override
+                public void remove() {
+                    node.previous.next = node.next;
+                    node.next.previous = node.previous;
+                    if (node == first) {
+                        first = node.next;
+                    }
+                    node = node.next;
+                }
+            };
+        }
     }
 
     private static class Node<E> {
