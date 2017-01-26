@@ -7,6 +7,6 @@ notifications:
 
   slack:
     rooms:
-      - crusader8-dev:uk1gzRxbMrjf6BGLtCWl1Wfd#travis-ci
+      - crusader8-dev:BKBd1z5HXI3vpMZMjr2PE6oG#travis-ci
     on_success: change # default: always
     on_failure: always # default: always
