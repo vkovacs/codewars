@@ -22,7 +22,7 @@ public class Kata {
             }
         }
 
-        return circleList.getNode().element;
+        return circleList.getNode();
     }
 
     private static class CircleList<E> implements Iterable<E>{
@@ -52,8 +52,8 @@ public class Kata {
             node = first;
         }
 
-        Node<E> getNode() {
-            return node;
+        E getNode() {
+            return node.element;
         }
 
         @Override
@@ -98,5 +98,4 @@ public class Kata {
             this.previous = previous;
         }
     }
-
 }
