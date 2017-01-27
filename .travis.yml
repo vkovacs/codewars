@@ -12,6 +12,3 @@ addons:
   sonarqube:
     token:
       secure: Nu7+/lMt8SucdslH4K84xC7hGKvSB2H1TDW94kef3E+uzfuHhyYlAmRXfxMJiwAnvjvxe+v7yjgMU6SXyx9F1o9fRONYN9aGyYpwGWTkBkPN2ZKRLT9jqoBjaS88eL4fY1u5LxGikYiC7YHpgmCzj68mCR4ns2Ap6b3pGlkvYhsOVPi3flhdrD5zY2XpEAmxp9CseD12xGV1XVBbv9RIzYv96/Usnio3exAx5NaUZ/QHFrXUKMA17NiHesapJjcztZc5HvKKCHBlfDhS45F30lxLZl7ptAn9GJQZSNOjGCMNIvHQOCgja9KTbbJMQJ9AwT47dxKXmuOYuatStJHFqKM3z49sn/tTBeFEUGScLSobi5ikSRfbSHEngt/2Ujy5DaZTLG584k6DZE/10L+0Yv7Ae1oRp3LyFyMLZWlyzIovgRbf2acAj6WDYvRbTnphANFpkW/nzLmZldxm3qn+BD+5BLKMSVdgWtpsP2TzKvov86U1AXshsyecxtWSZFdh1qq1nnirWt1ysKnwvm6k/NOEJNdolzkLeF4FajUiMrZ60Wfbu6Y+U4zFEdIfLx1FwMgUJ25YhJ7PLmkR6HzPBHv5Ew5d6Lmwl0SgD8lYNIjwAjkIBE0T4us6JwIJ3lGXvQCouxAn6Ficzquo+PzHcejMh5irrzwp3Pd4RU8BbLI=
-script:
-  # JaCoCo is used to have code coverage, the agent has to be activated
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
