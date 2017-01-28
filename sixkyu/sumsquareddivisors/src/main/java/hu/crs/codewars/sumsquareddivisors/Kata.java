@@ -9,11 +9,12 @@ public class Kata {
     public static String listSquared(long m, long n) {
         List<long[]> result = new ArrayList<>();
 
-        for (long l = m; l <= n; l++) {
-            List<Long> divisors = foundDivisors(l);
+        for (long i = m; i <= n; i++) {
+            List<Long> divisors = foundDivisors(i);
             long divisorSum = divisors.stream().mapToLong(num -> num * num).sum();
-            if (Math.sqrt(divisorSum) % 1 == 0) {
-                result.add(new long[]{l, divisorSum});
+            double sqrt = Math.sqrt(divisorSum);
+            if (isInteger(sqrt)) {
+                result.add(new long[]{i, divisorSum});
             }
         }
         return Arrays.deepToString(result.toArray());
@@ -21,7 +22,7 @@ public class Kata {
 
     private static List<Long> foundDivisors(long num) {
         List<Long> divisors = new ArrayList<>();
-        long max = (long) Math.floor(num / 2);
+        long max = num / 2;
         for (long l = 1; l <= max; l++) {
             if (num % l == 0) {
                 divisors.add(l);
@@ -30,6 +31,10 @@ public class Kata {
 
         divisors.add(num);
         return divisors;
+    }
+
+    private static boolean isInteger(double d) {
+        return (d == (int) d);
     }
 
 }

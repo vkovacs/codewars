@@ -109,7 +109,7 @@ class Kata {
         if ((length % PREFERRED_RUNNERS_COUNT == 0)) {
             return length / PREFERRED_RUNNERS_COUNT;
         } else {
-            int mainRunnersLength = (int) Math.floor(length / (PREFERRED_RUNNERS_COUNT));
+            int mainRunnersLength = length / PREFERRED_RUNNERS_COUNT;
             int lastRunnerLength = length - (PREFERRED_RUNNERS_COUNT * mainRunnersLength);
 
             boolean isMaxLastRunnerLength = false;

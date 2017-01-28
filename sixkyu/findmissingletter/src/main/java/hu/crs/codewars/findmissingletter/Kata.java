@@ -10,6 +10,6 @@ class Kata {
             }
             previous = current;
         }
-        throw new RuntimeException("Invalid input");
+        throw new IllegalArgumentException();
     }
 }
