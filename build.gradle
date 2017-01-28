@@ -19,3 +19,11 @@ subprojects {
         compile group: 'junit', name: 'junit', version: '4.12'
     }
 }
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Codewars"
+        property "sonar.projectKey", "hu.crs:codewars"
+
+    }
+}
