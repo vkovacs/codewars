@@ -34,7 +34,7 @@ public class Kata {
     }
 
     private static boolean isInteger(double d) {
-        return (d == (int) d);
+        return (int) Math.ceil(d) == (int) Math.floor(d);
     }
 
 }
