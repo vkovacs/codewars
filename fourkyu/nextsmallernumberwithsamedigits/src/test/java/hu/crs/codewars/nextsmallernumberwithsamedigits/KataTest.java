@@ -13,5 +13,6 @@ public class KataTest {
         assertEquals(-1, Kata.nextSmaller(1027));
         assertEquals(414, Kata.nextSmaller(441));
         assertEquals(123456789, Kata.nextSmaller(123456798));
+        assertEquals(351, Kata.nextSmaller(513));
     }
 }
