@@ -1,41 +1,105 @@
 package hu.crs.codewars.nextsmallernumberwithsamedigits;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class Kata {
     public static long nextSmaller(long n) {
 
-        final String nString = String.valueOf(n);
-        final String newString = changeDigits(String.valueOf(n), true);
-        if (nString.equals(newString)) {
+        String s = String.valueOf(n);
+        Map<Character, Integer> nMap = createCharacterMap(s);
+
+        if (allDigitsIsTheSame(nMap)) {
             return -1;
         }
 
-        return Long.parseLong(newString);
-    }
-
-    private static String changeDigits(String nString, boolean firstRun) {
-        if (nString.length() == 1) {
-            return nString;
+        if (isIncreasingSequence(s)) {
+            return -1;
         }
 
-        int i = nString.length() - 1;
+        if (isIncreasingSequenceButSecondIs0(s)) {
+            return -1;
+        }
 
-        int previousDigitPos = i;
-        i--;
-        while (i >= 0) {
-            int currentDigitPos = i;
-            if (nString.charAt(currentDigitPos) > nString.charAt(previousDigitPos) || (!firstRun && nString.charAt(currentDigitPos) == '0')) {
-                char[] nChars = nString.toCharArray();
-                final char largerDigit = nChars[currentDigitPos];
-                nChars[currentDigitPos] = nChars[previousDigitPos];
-                nChars[previousDigitPos] = largerDigit;
-
-                final String newString = String.valueOf(nChars);
-                return newString.charAt(0) + changeDigits(newString.substring(1, newString.length()), false);
+        long minPossibleNumber = (long) Math.pow(10, s.length() - 1);
+        for (long i = n - 1; i > minPossibleNumber; i--) {
+            Map<Character, Integer> iMap = createCharacterMap(String.valueOf(i));
+            if (containsAllCharacters(iMap, nMap)) {
+                return i;
             }
-            i--;
         }
-        return nString;
+
+        return -1;
     }
+
+    private static boolean allDigitsIsTheSame(Map<Character, Integer> nMap) {
+        if (nMap.keySet().size() == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    private static Map<Character, Integer> createCharacterMap(String s) {
+        Map<Character, Integer> characterMap = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            Character character = s.charAt(i);
+            final Set<Character> characters = characterMap.keySet();
+            if (characters.contains(character)) {
+                Integer value = characterMap.get(character);
+                characterMap.put(character, ++value);
+            } else {
+                characterMap.put(character, 0);
+            }
+        }
+        return characterMap;
+    }
+
+    private static boolean containsAllCharacters(Map<Character, Integer> availableCharacterMap, Map<Character, Integer> neededCharacterMap) {
+        final Set<Character> neededCharacters = neededCharacterMap.keySet();
+        for (Character neededCharacter : neededCharacters) {
+            if (availableCharacterMap.get(neededCharacter) == null || availableCharacterMap.get(neededCharacter) < neededCharacterMap.get(neededCharacter)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isIncreasingSequence(String s) {
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i - 1) > s.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isIncreasingSequenceButSecondIs0(String s) {
+        if (!String.valueOf(s.charAt(1)).equals("0")) {
+            return false;
+        }
+
+        List<Character> characters = new LinkedList<>();
+        for (int i = 0; i < s.length(); i++) {
+            characters.add(s.charAt(i));
+        }
+
+        StringBuilder sb = new StringBuilder();
+        characters.remove(1);
+
+        for (int i = 0; i < characters.size(); i++) {
+            sb.append(characters.get(i));
+        }
+
+        if (isIncreasingSequence(sb.toString())) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
 
 
