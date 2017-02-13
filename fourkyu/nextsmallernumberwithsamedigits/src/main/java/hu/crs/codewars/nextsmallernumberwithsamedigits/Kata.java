@@ -12,7 +12,7 @@ public class Kata {
         String s = String.valueOf(n);
         Map<Character, Integer> nMap = createCharacterMap(s);
 
-        if (allDigitsIsTheSame(nMap)) {
+        if (allDigitsAreTheSame(nMap)) {
             return -1;
         }
 
@@ -35,7 +35,7 @@ public class Kata {
         return -1;
     }
 
-    private static boolean allDigitsIsTheSame(Map<Character, Integer> nMap) {
+    private static boolean allDigitsAreTheSame(Map<Character, Integer> nMap) {
         if (nMap.keySet().size() == 1) {
             return true;
         }
@@ -89,15 +89,12 @@ public class Kata {
         StringBuilder sb = new StringBuilder();
         characters.remove(1);
 
-        for (int i = 0; i < characters.size(); i++) {
-            sb.append(characters.get(i));
+        for (Character character : characters) {
+            sb.append(character);
         }
 
-        if (isIncreasingSequence(sb.toString())) {
-            return true;
-        }
+        return isIncreasingSequence(sb.toString());
 
-        return false;
     }
 
 }
