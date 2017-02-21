@@ -23,4 +23,6 @@ include ':sevenkyu:jadencasingstrings'
 include ':sevenkyu'
 include 'fourkyu:validbraces'
 findProject(':fourkyu:validbraces')?.name = 'validbraces'
+include 'sixkyu:yourorderplease'
+findProject(':sixkyu:yourorderplease')?.name = 'yourorderplease'
 
