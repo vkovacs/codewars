@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("Duplicates")
 public class Kata {
     public static long nextSmaller(long n) {
 

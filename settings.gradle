@@ -25,4 +25,6 @@ include 'fourkyu:validbraces'
 findProject(':fourkyu:validbraces')?.name = 'validbraces'
 include 'sixkyu:yourorderplease'
 findProject(':sixkyu:yourorderplease')?.name = 'yourorderplease'
+include 'fourkyu:nextbiggernumberwithsamedigits'
+findProject(':fourkyu:nextbiggernumberwithsamedigits')?.name = 'nextbiggernumberwithsamedigits'
 
