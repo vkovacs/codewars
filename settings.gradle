@@ -29,4 +29,8 @@ include 'fourkyu:nextbiggernumberwithsamedigits'
 findProject(':fourkyu:nextbiggernumberwithsamedigits')?.name = 'nextbiggernumberwithsamedigits'
 include 'fivekyu:humanreadabletime'
 findProject(':fivekyu:humanreadabletime')?.name = 'humanreadabletime'
+include 'fivekyu:airportarrivalsdepartures1'
+findProject(':fivekyu:airportarrivalsdepartures1')?.name = 'airportarrivalsdepartures1'
+include 'fourkyu:escapingthematrix'
+findProject(':fourkyu:escapingthematrix')?.name = 'escapingthematrix'
 
