@@ -2,12 +2,10 @@ package hu.crs.codewars.escapingthematrix;
 
 public class Kata {
     public static void enter() {
-        new EvilThrower<RuntimeException>().sneakyThrow(new Neo());
+        Kata.sneakyThrow();
     }
 
-    public static class EvilThrower<T extends Throwable> {
-        void sneakyThrow(Exception exception) throws T {
-            throw (T) exception;
-        }
+    static <T extends Throwable> void sneakyThrow() throws T {
+        throw (T) new Neo();
     }
 }
