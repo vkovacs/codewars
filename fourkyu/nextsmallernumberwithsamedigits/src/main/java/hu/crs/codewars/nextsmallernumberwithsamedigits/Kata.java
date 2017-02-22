@@ -37,10 +37,7 @@ public class Kata {
     }
 
     private static boolean allDigitsAreTheSame(Map<Character, Integer> nMap) {
-        if (nMap.keySet().size() == 1) {
-            return true;
-        }
-        return false;
+        return nMap.keySet().size() == 1;
     }
 
     private static Map<Character, Integer> createCharacterMap(String s) {
