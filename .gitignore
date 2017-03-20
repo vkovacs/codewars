@@ -11,3 +11,4 @@
 !/gradlew.bat
 **/settings.gradle
 !/settings.gradle
+!/gradle/wrapper/
