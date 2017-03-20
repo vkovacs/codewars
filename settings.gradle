@@ -33,4 +33,6 @@ include 'fivekyu:airportarrivalsdepartures1'
 findProject(':fivekyu:airportarrivalsdepartures1')?.name = 'airportarrivalsdepartures1'
 include 'fourkyu:escapingthematrix'
 findProject(':fourkyu:escapingthematrix')?.name = 'escapingthematrix'
+include 'fourkyu:romannumeralsencoder'
+findProject(':fourkyu:romannumeralsencoder')?.name = 'romannumeralsencoder'
 
