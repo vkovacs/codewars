@@ -4,7 +4,6 @@
 .gradle
 **/target
 !/gradle/
-**/gradle
 **/gradlew
 **/gradlew.bat
 !/gradlew
