@@ -69,18 +69,7 @@ public class Kata {
                     result.append((char) cells[cellPointer]);
                     break;
                 case 'W':
-                    int cycleStartCount = 1;
-                    int cycleEndIndex = -1;
-                    int j = i ;
-                    while (cycleStartCount > 0) {
-                        j++;
-                        if (expression.charAt(j) == 'W') {
-                            cycleStartCount++;
-                        } else if (expression.charAt(j) == 'E') {
-                            cycleStartCount--;
-                        }
-                    }
-                    cycleEndIndex = j;
+                    int cycleEndIndex = locateCycleEndIndex(expression, i);
                     String subExpression = expression.substring(i + 1, cycleEndIndex);
                     while (cells[cellPointer] > 0) {
                         result.append(execute(cells, cellPointer, clipboard, subExpression));
@@ -89,6 +78,20 @@ public class Kata {
             }
         }
         return result.toString();
+    }
+
+    private static int locateCycleEndIndex(String expression, int i) {
+        int cycleStartCount = 1;
+        int j = i ;
+        while (cycleStartCount > 0) {
+            j++;
+            if (expression.charAt(j) == 'W') {
+                cycleStartCount++;
+            } else if (expression.charAt(j) == 'E') {
+                cycleStartCount--;
+            }
+        }
+        return j;
     }
 
     private static int normalize(int value) {
