@@ -34,6 +34,12 @@ public class Kata {
                 case 'p':
                     cells[cellPointer] = clipboard;
                     break;
+                case 'T':
+                    cells[cellPointer] *= 2;
+                    break;
+                case 'U':
+                    cells[cellPointer] = (int) Math.sqrt(cells[cellPointer]);
+                    break;
                 case 'N':
                     result.append(cells[cellPointer]);
                     break;
