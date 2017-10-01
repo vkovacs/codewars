@@ -8,7 +8,12 @@ import static org.junit.Assert.assertEquals;
 public class KataTest {
     @Test
     public void testNoInput() {
-        assertEquals("", "");
+        assertEquals("", Kata.interpret(""));
+    }
+
+    @Test
+    public void testCellDefaultValue() {
+        assertEquals("0", Kata.interpret("N"));
     }
 
 
