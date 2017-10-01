@@ -47,6 +47,11 @@ public class KataTest {
     }
 
     @Test
+    public void testIgnoreInvalidCharacter() {
+        assertEquals("1", Kata.interpret(" +ŐN"));
+    }
+
+    @Test
     @Ignore
     public void SampleTests() {
         assertEquals("Hello World!", Kata.interpret("LQTcQAP>pQBBTAI-PA-PPL+P<BVPAL+T+P>PL+PBLPBP<DLLLT+P"));

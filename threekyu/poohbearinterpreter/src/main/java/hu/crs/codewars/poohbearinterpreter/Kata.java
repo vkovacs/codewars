@@ -33,6 +33,7 @@ public class Kata {
                     break;
                 case 'N':
                     result.append(cells[cellPointer]);
+                    break;
             }
         }
         return result.toString();
