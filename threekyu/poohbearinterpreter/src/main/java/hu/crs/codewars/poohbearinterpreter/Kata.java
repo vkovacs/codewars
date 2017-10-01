@@ -37,6 +37,9 @@ public class Kata {
                 case 'T':
                     cells[cellPointer] *= 2;
                     break;
+                case 'Q':
+                    cells[cellPointer] = (int) Math.pow(cells[cellPointer], 2);
+                    break;
                 case 'U':
                     cells[cellPointer] = (int) Math.sqrt(cells[cellPointer]);
                     break;
@@ -63,6 +66,9 @@ public class Kata {
                     break;
                 case 'N':
                     result.append(cells[cellPointer]);
+                    break;
+                case 'P':
+                    result.append((char)cells[cellPointer]);
                     break;
             }
         }

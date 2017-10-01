@@ -112,6 +112,11 @@ public class KataTest {
     }
 
     @Test
+    public void testCellValueAsASCII() {
+        assertEquals("A", Kata.interpret("LTTTTT+P"));
+    }
+
+    @Test
     @Ignore
     public void SampleTests() {
         assertEquals("Hello World!", Kata.interpret("LQTcQAP>pQBBTAI-PA-PPL+P<BVPAL+T+P>PL+PBLPBP<DLLLT+P"));
