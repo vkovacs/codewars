@@ -15,9 +15,15 @@ public class Kata {
             switch (s.charAt(i)) {
                 case '+':
                     cells[cellPointer]++;
+                    if (cells[cellPointer] == 256) {
+                        cells[cellPointer] = 0;
+                    }
                     break;
                 case '-':
                     cells[cellPointer]--;
+                    if (cells[cellPointer] == -1) {
+                        cells[cellPointer] = 255;
+                    }
                     break;
                 case '>':
                     cellPointer++;

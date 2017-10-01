@@ -37,6 +37,16 @@ public class KataTest {
     }
 
     @Test
+    public void testCellValueUnderflow() {
+        assertEquals("255", Kata.interpret("-N"));
+    }
+
+    @Test
+    public void testCellValueOverflow() {
+        assertEquals("0", Kata.interpret("-+N"));
+    }
+
+    @Test
     @Ignore
     public void SampleTests() {
         assertEquals("Hello World!", Kata.interpret("LQTcQAP>pQBBTAI-PA-PPL+P<BVPAL+T+P>PL+PBLPBP<DLLLT+P"));
