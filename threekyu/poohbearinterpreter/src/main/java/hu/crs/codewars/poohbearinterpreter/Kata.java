@@ -15,16 +15,10 @@ public class Kata {
         for (int i = 0; i < expression.length(); i++) {
             switch (expression.charAt(i)) {
                 case '+':
-                    cells[cellPointer]++;
-                    if (cells[cellPointer] == 256) {
-                        cells[cellPointer] = 0;
-                    }
+                    cells[cellPointer] = normalize(cells[cellPointer] + 1);
                     break;
                 case '-':
-                    cells[cellPointer]--;
-                    if (cells[cellPointer] == -1) {
-                        cells[cellPointer] = 255;
-                    }
+                    cells[cellPointer] = normalize(cells[cellPointer] - 1);
                     break;
                 case '>':
                     cellPointer++;
@@ -39,34 +33,34 @@ public class Kata {
                     cells[cellPointer] = clipboard;
                     break;
                 case 'T':
-                    cells[cellPointer] *= 2;
+                    cells[cellPointer] = normalize(cells[cellPointer] * 2);
                     break;
                 case 'Q':
-                    cells[cellPointer] = (int) Math.pow(cells[cellPointer], 2);
+                    cells[cellPointer] = normalize((int) Math.pow(cells[cellPointer], 2));
                     break;
                 case 'U':
-                    cells[cellPointer] = (int) Math.sqrt(cells[cellPointer]);
+                    cells[cellPointer] = normalize((int) Math.sqrt(cells[cellPointer]));
                     break;
                 case 'L':
-                    cells[cellPointer] += 2;
+                    cells[cellPointer] = normalize(cells[cellPointer] + 2);
                     break;
                 case 'I':
-                    cells[cellPointer] -= 2;
+                    cells[cellPointer] = normalize(cells[cellPointer] - 2);
                     break;
                 case 'V':
-                    cells[cellPointer] /= 2;
+                    cells[cellPointer] = normalize(cells[cellPointer] / 2);
                     break;
                 case 'A':
-                    cells[cellPointer] += clipboard;
+                    cells[cellPointer] = normalize(cells[cellPointer] + clipboard);
                     break;
                 case 'B':
-                    cells[cellPointer] -= clipboard;
+                    cells[cellPointer] = normalize(cells[cellPointer] - clipboard);
                     break;
                 case 'Y':
-                    cells[cellPointer] *= clipboard;
+                    cells[cellPointer] = normalize(cells[cellPointer] * clipboard);
                     break;
                 case 'D':
-                    cells[cellPointer] /= clipboard;
+                    cells[cellPointer] = normalize(cells[cellPointer] / clipboard);
                     break;
                 case 'N':
                     result.append(cells[cellPointer]);
@@ -84,5 +78,14 @@ public class Kata {
             }
         }
         return result.toString();
+    }
+
+    private static int normalize(int value) {
+        if (value < 0) {
+            return 256 - Math.abs(value % 256);
+        } else if (value > 255) {
+            return value % 256;
+        }
+        return value;
     }
 }
