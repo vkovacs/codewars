@@ -92,6 +92,26 @@ public class KataTest {
     }
 
     @Test
+    public void testCellValueAddClipboard() {
+        assertEquals("3", Kata.interpret("Lc>+AN"));
+    }
+
+    @Test
+    public void testCellValueSubtractClipboard() {
+        assertEquals("1", Kata.interpret("Lc>+++BN"));
+    }
+
+    @Test
+    public void testCellValueMultiplyClipboard() {
+        assertEquals("6", Kata.interpret("Lc>+++YN"));
+    }
+
+    @Test
+    public void testCellValueDivideClipboard() {
+        assertEquals("2", Kata.interpret("Lc>++++DN"));
+    }
+
+    @Test
     @Ignore
     public void SampleTests() {
         assertEquals("Hello World!", Kata.interpret("LQTcQAP>pQBBTAI-PA-PPL+P<BVPAL+T+P>PL+PBLPBP<DLLLT+P"));

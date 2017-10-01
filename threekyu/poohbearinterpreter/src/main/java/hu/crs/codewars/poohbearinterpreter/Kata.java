@@ -49,6 +49,18 @@ public class Kata {
                 case 'V':
                     cells[cellPointer] /= 2;
                     break;
+                case 'A':
+                    cells[cellPointer] += clipboard;
+                    break;
+                case 'B':
+                    cells[cellPointer] -= clipboard;
+                    break;
+                case 'Y':
+                    cells[cellPointer] *= clipboard;
+                    break;
+                case 'D':
+                    cells[cellPointer] /= clipboard;
+                    break;
                 case 'N':
                     result.append(cells[cellPointer]);
                     break;
