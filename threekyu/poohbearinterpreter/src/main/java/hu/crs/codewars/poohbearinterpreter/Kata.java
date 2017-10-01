@@ -40,6 +40,12 @@ public class Kata {
                 case 'U':
                     cells[cellPointer] = (int) Math.sqrt(cells[cellPointer]);
                     break;
+                case 'L':
+                    cells[cellPointer] += 2;
+                    break;
+                case 'I':
+                    cells[cellPointer] -= 2;
+                    break;
                 case 'N':
                     result.append(cells[cellPointer]);
                     break;

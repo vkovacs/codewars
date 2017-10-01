@@ -72,6 +72,16 @@ public class KataTest {
     }
 
     @Test
+    public void testCellValueAddTwo() {
+        assertEquals("2", Kata.interpret("LN"));
+    }
+
+    @Test
+    public void testCellValueSubstractTwo() {
+        assertEquals("0", Kata.interpret("LIN"));
+    }
+
+    @Test
     @Ignore
     public void SampleTests() {
         assertEquals("Hello World!", Kata.interpret("LQTcQAP>pQBBTAI-PA-PPL+P<BVPAL+T+P>PL+PBLPBP<DLLLT+P"));
