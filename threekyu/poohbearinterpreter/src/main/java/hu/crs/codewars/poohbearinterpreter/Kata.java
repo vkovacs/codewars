@@ -16,6 +16,9 @@ public class Kata {
                 case '+':
                     cells[cellPointer]++;
                     break;
+                case '-':
+                    cells[cellPointer]--;
+                    break;
                 case '>':
                     cellPointer++;
                     break;
