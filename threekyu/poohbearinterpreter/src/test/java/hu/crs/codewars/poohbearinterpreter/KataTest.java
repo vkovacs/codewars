@@ -21,6 +21,11 @@ public class KataTest {
         assertEquals("1", Kata.interpret("+N"));
     }
 
+    @Test
+    public void testCellPointerRight() {
+        assertEquals("0", Kata.interpret("+>N"));
+    }
+
 
 
     @Test

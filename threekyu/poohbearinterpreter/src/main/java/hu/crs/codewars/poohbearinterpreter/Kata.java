@@ -5,16 +5,22 @@ public class Kata {
         if (s.equals("")) {
             return "";
         }
-        int cell = 0;
+
+        int[] cells = new int[30_000];
+        int cellPointer = 0;
+
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < s.length(); i++) {
             switch (s.charAt(i)) {
                 case '+':
-                    cell++;
+                    cells[cellPointer]++;
+                    break;
+                case '>':
+                    cellPointer++;
                     break;
                 case 'N':
-                    result.append(cell);
+                    result.append(cells[cellPointer]);
             }
         }
         return result.toString();
