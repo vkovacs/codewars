@@ -46,6 +46,9 @@ public class Kata {
                 case 'I':
                     cells[cellPointer] -= 2;
                     break;
+                case 'V':
+                    cells[cellPointer] /= 2;
+                    break;
                 case 'N':
                     result.append(cells[cellPointer]);
                     break;

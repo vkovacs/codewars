@@ -77,8 +77,18 @@ public class KataTest {
     }
 
     @Test
-    public void testCellValueSubstractTwo() {
+    public void testCellValueSubtractTwo() {
         assertEquals("0", Kata.interpret("LIN"));
+    }
+
+    @Test
+    public void testCellValueDivideByTwo() {
+        assertEquals("1", Kata.interpret("LVN"));
+    }
+
+    @Test
+    public void testCellValueDivideByTwoNotIntegerDivisionResult() {
+        assertEquals("1", Kata.interpret("L+VN"));
     }
 
     @Test
