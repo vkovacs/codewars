@@ -2,10 +2,6 @@ package hu.crs.codewars.poohbearinterpreter;
 
 public class Kata {
     public static String interpret(String s) {
-        if (s.equals("")) {
-            return "";
-        }
-
         int[] cells = new int[30_000];
         int cellPointer = 0;
         int clipboard = 0;
