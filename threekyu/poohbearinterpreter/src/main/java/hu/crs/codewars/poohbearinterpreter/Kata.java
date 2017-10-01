@@ -8,6 +8,7 @@ public class Kata {
 
         int[] cells = new int[30_000];
         int cellPointer = 0;
+        int clipboard = 0;
 
         StringBuilder result = new StringBuilder();
 
@@ -30,6 +31,12 @@ public class Kata {
                     break;
                 case '<':
                     cellPointer--;
+                    break;
+                case 'c':
+                    clipboard = cells[cellPointer];
+                    break;
+                case 'p':
+                    cells[cellPointer] = clipboard;
                     break;
                 case 'N':
                     result.append(cells[cellPointer]);
