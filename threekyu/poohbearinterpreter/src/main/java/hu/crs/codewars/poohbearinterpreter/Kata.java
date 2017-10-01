@@ -5,6 +5,18 @@ public class Kata {
         if (s.equals("")) {
             return "";
         }
-        return "0";
+        int cell = 0;
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < s.length(); i++) {
+            switch (s.charAt(i)) {
+                case '+':
+                    cell++;
+                    break;
+                case 'N':
+                    result.append(cell);
+            }
+        }
+        return result.toString();
     }
 }

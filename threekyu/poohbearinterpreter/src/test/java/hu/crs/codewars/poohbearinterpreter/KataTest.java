@@ -16,6 +16,11 @@ public class KataTest {
         assertEquals("0", Kata.interpret("N"));
     }
 
+    @Test
+    public void testCellPlusValue() {
+        assertEquals("1", Kata.interpret("+N"));
+    }
+
 
 
     @Test
