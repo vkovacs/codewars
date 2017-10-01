@@ -19,6 +19,9 @@ public class Kata {
                 case '>':
                     cellPointer++;
                     break;
+                case '<':
+                    cellPointer--;
+                    break;
                 case 'N':
                     result.append(cells[cellPointer]);
             }
