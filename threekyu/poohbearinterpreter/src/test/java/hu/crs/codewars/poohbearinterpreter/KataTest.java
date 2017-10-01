@@ -126,6 +126,16 @@ public class KataTest {
     }
 
     @Test
+    public void testNestedCycles() {
+        assertEquals("153", Kata.interpret("LL+W c>p>p<- W c>Y<- E>c>A<<<- E>>>N"));
+    }
+
+    @Test
+    public void testTwoCycles() {
+        assertEquals("2'0A", Kata.interpret("LILcABNBpYDYYYYLLL+P-+W-EQNW-ELLQUTTTT+P"));
+    }
+
+    @Test
     public void SampleTests() {
         assertEquals("Hello World!", Kata.interpret("LQTcQAP>pQBBTAI-PA-PPL+P<BVPAL+T+P>PL+PBLPBP<DLLLT+P"));
 
