@@ -117,6 +117,11 @@ public class KataTest {
     }
 
     @Test
+    public void testCycle() {
+        assertEquals("10", Kata.interpret("LW-NE"));
+    }
+
+    @Test
     @Ignore
     public void SampleTests() {
         assertEquals("Hello World!", Kata.interpret("LQTcQAP>pQBBTAI-PA-PPL+P<BVPAL+T+P>PL+PBLPBP<DLLLT+P"));

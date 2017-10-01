@@ -1,15 +1,19 @@
 package hu.crs.codewars.poohbearinterpreter;
 
 public class Kata {
-    public static String interpret(String s) {
+    public static String interpret(String expression) {
         int[] cells = new int[30_000];
         int cellPointer = 0;
         int clipboard = 0;
 
+        return execute(cells, cellPointer, clipboard, expression);
+    }
+
+    private static String execute(int[] cells, int cellPointer, int clipboard, String expression) {
         StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < s.length(); i++) {
-            switch (s.charAt(i)) {
+        for (int i = 0; i < expression.length(); i++) {
+            switch (expression.charAt(i)) {
                 case '+':
                     cells[cellPointer]++;
                     if (cells[cellPointer] == 256) {
@@ -68,8 +72,15 @@ public class Kata {
                     result.append(cells[cellPointer]);
                     break;
                 case 'P':
-                    result.append((char)cells[cellPointer]);
+                    result.append((char) cells[cellPointer]);
                     break;
+                case 'W':
+                    int cycleEndIndex = expression.indexOf('E', i);
+                    String subExpression = expression.substring(i + 1, cycleEndIndex);
+                    while (cells[cellPointer] > 0) {
+                        result.append(execute(cells, cellPointer, clipboard, subExpression));
+                    }
+                    i = cycleEndIndex;
             }
         }
         return result.toString();
