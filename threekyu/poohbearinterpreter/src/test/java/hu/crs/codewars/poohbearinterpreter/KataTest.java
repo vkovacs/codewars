@@ -1,6 +1,5 @@
 package hu.crs.codewars.poohbearinterpreter;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -122,7 +121,6 @@ public class KataTest {
     }
 
     @Test
-    @Ignore
     public void SampleTests() {
         assertEquals("Hello World!", Kata.interpret("LQTcQAP>pQBBTAI-PA-PPL+P<BVPAL+T+P>PL+PBLPBP<DLLLT+P"));
 
