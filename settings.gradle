@@ -30,4 +30,6 @@ include 'fivekyu:humanreadabletime'
 include 'fivekyu:airportarrivalsdepartures1'
 include 'fourkyu:escapingthematrix'
 include 'fourkyu:romannumeralsencoder'
+include 'fourkyu:stripcomments'
+findProject(':fourkyu:stripcomments')?.name = 'stripcomments'
 
