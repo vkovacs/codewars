@@ -32,4 +32,7 @@ include 'fourkyu:escapingthematrix'
 include 'fourkyu:romannumeralsencoder'
 include 'fourkyu:stripcomments'
 findProject(':fourkyu:stripcomments')?.name = 'stripcomments'
+include 'onekyu'
+include 'onekyu:tinythreepasscompiler'
+findProject(':onekyu:tinythreepasscompiler')?.name = 'tinythreepasscompiler'
 
