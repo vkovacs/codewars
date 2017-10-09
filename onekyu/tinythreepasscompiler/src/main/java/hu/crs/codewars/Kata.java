@@ -43,4 +43,38 @@ public class Kata {
         tokens.add("$"); // end-of-stream
         return tokens;
     }
+
+    public static String infoxToPrefix(String infixString) {
+        Deque<Character> stack = new LinkedList<>();
+        StringBuilder result = new StringBuilder();
+        for (int i = infixString.length() - 1; i > - 1; i--) {
+            char currentCharacter = infixString.charAt(i);
+            if (!isOperand(currentCharacter)) {
+                result.insert(0, currentCharacter);
+            } else {
+                stack.push(currentCharacter);
+            }
+        }
+        while (stack.size() > 0) {
+            Character character = stack.removeFirst();
+            result.insert(0, character);
+        }
+        return result.toString();
+    }
+
+    private static boolean isOperand(char c) {
+        return c == '+' || c == '-' || c == '/' || c == '*';
+    }
+
+    private static int largerPrecedence(char op0, char op1) {
+        if ((op0 == '+' || op0 == '-') && (op1 == '+' || op1 == '-') || (op0 == '*' || op0 == '/') && (op1 == '*' || op1 == '/')) {
+            return 0;
+        } else if (((op0 == '+' || op0 == '-') && (op1 == '/' || op1 == '*'))) {
+            return 1;
+        } else if ((op0 == '/' || op0 == '*') && (op1 == '+' || op1 == '-')) {
+            return -1;
+        } else {
+            throw new IllegalStateException();
+        }
+    }
 }

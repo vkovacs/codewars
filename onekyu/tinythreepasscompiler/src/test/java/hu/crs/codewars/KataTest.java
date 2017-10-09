@@ -31,4 +31,10 @@ public class KataTest {
         Assert.assertEquals("prog(4,8,0) == 8", 8, Simulator.simulate(p3, 4, 8, 0));
         Assert.assertEquals("prog(4,8,16) == 2", 2, Simulator.simulate(p3, 4, 8, 16));
     }
+
+    @Test
+    public void testInfixToPrefixJustEqualPrecedence() {
+        Assert.assertEquals("-+ABC", Kata.infoxToPrefix("A+B-C"));
+
+    }
 }
