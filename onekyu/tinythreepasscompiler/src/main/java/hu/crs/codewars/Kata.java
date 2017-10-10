@@ -44,37 +44,47 @@ public class Kata {
         return tokens;
     }
 
-    public static String infoxToPrefix(String infixString) {
+    public static String toPrefixNotation(String infixExpression) {
         Deque<Character> stack = new LinkedList<>();
-        StringBuilder result = new StringBuilder();
-        for (int i = infixString.length() - 1; i > - 1; i--) {
-            char currentCharacter = infixString.charAt(i);
-            if (!isOperand(currentCharacter) && !parenthesis(currentCharacter)) {
-                result.insert(0, currentCharacter);
+        StringBuilder prefixExpression = new StringBuilder();
+        for (int i = infixExpression.length() - 1; i > - 1; i--) {
+            char currentCharacter = infixExpression.charAt(i);
+
+            if (!isOperand(currentCharacter) && !isParenthesis(currentCharacter)) {
+                prefixExpression.insert(0, currentCharacter);
             } else if (currentCharacter == ')') {
                 stack.push(currentCharacter);
             } else if (currentCharacter == '(') {
                 Character top = stack.removeFirst();
                 while (top != ')') {
-                    result.insert(0, top);
+                    insertFirst(prefixExpression, top);
                     top = stack.removeFirst();
                 }
             } else {
                 //current character is an operand
-                while (!stack.isEmpty() && stack.peekFirst() != ')' && precedence(stack.peekFirst(), currentCharacter) < 0) {
-                    result.insert(0, stack.removeFirst());
+                Character top = stack.peekFirst();
+                while (!stack.isEmpty() && top != ')' && firstHasHigherPrecedence(top, currentCharacter) > 0) {
+                    insertFirst(prefixExpression, top);
+                    stack.removeFirst();
+                    top = stack.peekFirst();
                 }
                 stack.push(currentCharacter);
             }
         }
+
+        //leftovers in stack
         while (stack.size() > 0) {
-            Character character = stack.removeFirst();
-            result.insert(0, character);
+            Character top = stack.removeFirst();
+            insertFirst(prefixExpression, top);
         }
-        return result.toString();
+        return prefixExpression.toString();
     }
 
-    private static boolean parenthesis(char currentCharacter) {
+    private static void insertFirst(StringBuilder prefixExpression, Character top) {
+        prefixExpression.insert(0, top);
+    }
+
+    private static boolean isParenthesis(char currentCharacter) {
         return currentCharacter == '(' || currentCharacter == ')';
     }
 
@@ -84,16 +94,16 @@ public class Kata {
 
     /**
      * Returns 0 if op0 precedence == op1 precedence
-     * Returns -1 if op0 has higher precedence
-     * Return 1 if op1 has higher precedence
+     * Returns 1 if op0 has higher precedence
+     * Return -1 if op1 has higher precedence
      */
-    private static int precedence(char op0, char op1) {
+    private static int firstHasHigherPrecedence(char op0, char op1) {
         if ((op0 == '+' || op0 == '-') && (op1 == '+' || op1 == '-') || (op0 == '*' || op0 == '/') && (op1 == '*' || op1 == '/')) {
             return 0;
         } else if (((op0 == '+' || op0 == '-') && (op1 == '/' || op1 == '*'))) {
-            return 1;
-        } else if ((op0 == '/' || op0 == '*') && (op1 == '+' || op1 == '-')) {
             return -1;
+        } else if ((op0 == '/' || op0 == '*') && (op1 == '+' || op1 == '-')) {
+            return 1;
         } else {
             throw new IllegalStateException();
         }

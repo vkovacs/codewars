@@ -34,33 +34,33 @@ public class KataTest {
 
     @Test
     public void testInfixToPrefixJustEqualPrecedence() {
-        Assert.assertEquals("-+ABC", Kata.infoxToPrefix("A+B-C"));
+        Assert.assertEquals("-+ABC", Kata.toPrefixNotation("A+B-C"));
 
     }
 
     @Test
     public void testInfixToPrefixHasHigherPrecedence() {
-        Assert.assertEquals("+A/B2", Kata.infoxToPrefix("A+B/2"));
+        Assert.assertEquals("+A/B2", Kata.toPrefixNotation("A+B/2"));
 
     }
 
     @Test
     public void testInfixToPrefixHasHigherPrecedenceAndMultipleLower() {
-        Assert.assertEquals("-+A/B23", Kata.infoxToPrefix("A+B/2-3"));
+        Assert.assertEquals("-+A/B23", Kata.toPrefixNotation("A+B/2-3"));
     }
 
     @Test
     public void testInfixToPrefixHasMultipleHigherPrecedence() {
-        Assert.assertEquals("-/*AB23", Kata.infoxToPrefix("A*B/2-3"));
+        Assert.assertEquals("-/*AB23", Kata.toPrefixNotation("A*B/2-3"));
     }
 
     @Test
     public void testInfixToPrefixHandleParenthesis() {
-        Assert.assertEquals("+A/B-23", Kata.infoxToPrefix("A+B/(2-3)"));
+        Assert.assertEquals("+A/B-23", Kata.toPrefixNotation("A+B/(2-3)"));
     }
 
     @Test
     public void testInfixToPrefixMultipleParenthesis() {
-        Assert.assertEquals("/+23C", Kata.infoxToPrefix("(2+3)/C"));
+        Assert.assertEquals("/+23C", Kata.toPrefixNotation("(2+3)/C"));
     }
 }
