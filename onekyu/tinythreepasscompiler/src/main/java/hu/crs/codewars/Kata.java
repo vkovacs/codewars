@@ -52,6 +52,9 @@ public class Kata {
             if (!isOperand(currentCharacter)) {
                 result.insert(0, currentCharacter);
             } else {
+                while (!stack.isEmpty() && higherPrecedence(stack.peekFirst(), currentCharacter) < 0) {
+                    result.insert(0, stack.removeFirst());
+                }
                 stack.push(currentCharacter);
             }
         }
@@ -66,7 +69,7 @@ public class Kata {
         return c == '+' || c == '-' || c == '/' || c == '*';
     }
 
-    private static int largerPrecedence(char op0, char op1) {
+    private static int higherPrecedence(char op0, char op1) {
         if ((op0 == '+' || op0 == '-') && (op1 == '+' || op1 == '-') || (op0 == '*' || op0 == '/') && (op1 == '*' || op1 == '/')) {
             return 0;
         } else if (((op0 == '+' || op0 == '-') && (op1 == '/' || op1 == '*'))) {
