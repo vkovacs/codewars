@@ -34,33 +34,39 @@ public class KataTest {
 
     @Test
     public void testInfixToPrefixJustEqualPrecedence() {
-        Assert.assertEquals("-+ABC", Kata.toPrefixNotation("A+B-C"));
+        Assert.assertEquals("- + A B C", Kata.toPrefixNotation("A + B - C"));
 
     }
 
     @Test
     public void testInfixToPrefixHasHigherPrecedence() {
-        Assert.assertEquals("+A/B2", Kata.toPrefixNotation("A+B/2"));
+        Assert.assertEquals("+ A / B 2", Kata.toPrefixNotation("A + B / 2"));
 
     }
 
     @Test
     public void testInfixToPrefixHasHigherPrecedenceAndMultipleLower() {
-        Assert.assertEquals("-+A/B23", Kata.toPrefixNotation("A+B/2-3"));
+        Assert.assertEquals("- + A / B 2 3", Kata.toPrefixNotation("A + B / 2 - 3"));
     }
 
     @Test
     public void testInfixToPrefixHasMultipleHigherPrecedence() {
-        Assert.assertEquals("-/*AB23", Kata.toPrefixNotation("A*B/2-3"));
+        Assert.assertEquals("- / * A B 2 3", Kata.toPrefixNotation("A * B / 2 - 3"));
     }
 
     @Test
     public void testInfixToPrefixHandleParenthesis() {
-        Assert.assertEquals("+A/B-23", Kata.toPrefixNotation("A+B/(2-3)"));
+        Assert.assertEquals("+ A / B - 2 3", Kata.toPrefixNotation("A + B / ( 2 - 3)"));
     }
 
     @Test
-    public void testInfixToPrefixMultipleParenthesis() {
-        Assert.assertEquals("/+23C", Kata.toPrefixNotation("(2+3)/C"));
+    @Ignore
+    public void testInfixToPrefixNestedParenthesises() {
+        //https://en.wikipedia.org/wiki/Polish_notation#Example
+    }
+
+    @Test
+    @Ignore
+    public void testInfixToPrefixMultipleCharacterLongOperands() {
     }
 }

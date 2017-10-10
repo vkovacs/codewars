@@ -51,20 +51,22 @@ public class Kata {
             char currentCharacter = infixExpression.charAt(i);
 
             if (!isOperand(currentCharacter) && !isParenthesis(currentCharacter)) {
-                prefixExpression.insert(0, currentCharacter);
+                if (currentCharacter != ' ' || prefixExpression.charAt(0) != ' ') {
+                    prefixExpression.insert(0, currentCharacter);
+                }
             } else if (currentCharacter == ')') {
                 stack.push(currentCharacter);
             } else if (currentCharacter == '(') {
                 Character top = stack.removeFirst();
                 while (top != ')') {
-                    insertFirst(prefixExpression, top);
+                    insertOperandFirst(prefixExpression, top);
                     top = stack.removeFirst();
                 }
             } else {
                 //current character is an operand
                 Character top = stack.peekFirst();
                 while (!stack.isEmpty() && top != ')' && firstHasHigherPrecedence(top, currentCharacter) > 0) {
-                    insertFirst(prefixExpression, top);
+                    insertOperandFirst(prefixExpression, top);
                     stack.removeFirst();
                     top = stack.peekFirst();
                 }
@@ -75,13 +77,17 @@ public class Kata {
         //leftovers in stack
         while (stack.size() > 0) {
             Character top = stack.removeFirst();
-            insertFirst(prefixExpression, top);
+            insertOperandFirst(prefixExpression, top);
         }
         return prefixExpression.toString();
     }
 
-    private static void insertFirst(StringBuilder prefixExpression, Character top) {
-        prefixExpression.insert(0, top);
+    private static void insertOperandFirst(StringBuilder prefixExpression, Character top) {
+        if (prefixExpression.charAt(0) == ' ') {
+            prefixExpression.insert(0, top);
+        } else {
+            prefixExpression.insert(0, top + " ");
+        }
     }
 
     private static boolean isParenthesis(char currentCharacter) {
