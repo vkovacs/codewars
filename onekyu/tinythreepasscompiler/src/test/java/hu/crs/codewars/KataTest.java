@@ -47,11 +47,20 @@ public class KataTest {
     @Test
     public void testInfixToPrefixHasHigherPrecedenceAndMultipleLower() {
         Assert.assertEquals("-+A/B23", Kata.infoxToPrefix("A+B/2-3"));
-
     }
 
     @Test
     public void testInfixToPrefixHasMultipleHigherPrecedence() {
         Assert.assertEquals("-/*AB23", Kata.infoxToPrefix("A*B/2-3"));
+    }
+
+    @Test
+    public void testInfixToPrefixHandleParenthesis() {
+        Assert.assertEquals("+A/B-23", Kata.infoxToPrefix("A+B/(2-3)"));
+    }
+
+    @Test
+    public void testInfixToPrefixMultipleParenthesis() {
+        Assert.assertEquals("/+23C", Kata.infoxToPrefix("(2+3)/C"));
     }
 }

@@ -49,10 +49,19 @@ public class Kata {
         StringBuilder result = new StringBuilder();
         for (int i = infixString.length() - 1; i > - 1; i--) {
             char currentCharacter = infixString.charAt(i);
-            if (!isOperand(currentCharacter)) {
+            if (!isOperand(currentCharacter) && !parenthesis(currentCharacter)) {
                 result.insert(0, currentCharacter);
+            } else if (currentCharacter == ')') {
+                stack.push(currentCharacter);
+            } else if (currentCharacter == '(') {
+                Character top = stack.removeFirst();
+                while (top != ')') {
+                    result.insert(0, top);
+                    top = stack.removeFirst();
+                }
             } else {
-                while (!stack.isEmpty() && higherPrecedence(stack.peekFirst(), currentCharacter) < 0) {
+                //current character is an operand
+                while (!stack.isEmpty() && stack.peekFirst() != ')' && precedence(stack.peekFirst(), currentCharacter) < 0) {
                     result.insert(0, stack.removeFirst());
                 }
                 stack.push(currentCharacter);
@@ -65,11 +74,20 @@ public class Kata {
         return result.toString();
     }
 
+    private static boolean parenthesis(char currentCharacter) {
+        return currentCharacter == '(' || currentCharacter == ')';
+    }
+
     private static boolean isOperand(char c) {
         return c == '+' || c == '-' || c == '/' || c == '*';
     }
 
-    private static int higherPrecedence(char op0, char op1) {
+    /**
+     * Returns 0 if op0 precedence == op1 precedence
+     * Returns -1 if op0 has higher precedence
+     * Return 1 if op1 has higher precedence
+     */
+    private static int precedence(char op0, char op1) {
         if ((op0 == '+' || op0 == '-') && (op1 == '+' || op1 == '-') || (op0 == '*' || op0 == '/') && (op1 == '*' || op1 == '/')) {
             return 0;
         } else if (((op0 == '+' || op0 == '-') && (op1 == '/' || op1 == '*'))) {
