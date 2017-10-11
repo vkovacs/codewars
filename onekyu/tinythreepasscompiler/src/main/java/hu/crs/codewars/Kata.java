@@ -44,7 +44,7 @@ public class Kata {
         return tokens;
     }
 
-    public static String toPrefixNotation(String infixExpression) {
+    public String toPrefixNotation(String infixExpression) {
         Deque<Character> stack = new LinkedList<>();
         StringBuilder prefixExpression = new StringBuilder();
         for (int i = infixExpression.length() - 1; i > - 1; i--) {
