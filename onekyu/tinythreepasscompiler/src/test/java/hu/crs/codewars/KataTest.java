@@ -35,7 +35,6 @@ public class KataTest {
     @Test
     public void testInfixToPrefixJustEqualPrecedence() {
         Assert.assertEquals("- + A B C", Kata.toPrefixNotation("A + B - C"));
-
     }
 
     @Test
@@ -60,13 +59,8 @@ public class KataTest {
     }
 
     @Test
-    @Ignore
     public void testInfixToPrefixNestedParenthesises() {
-        //https://en.wikipedia.org/wiki/Polish_notation#Example
+        Assert.assertEquals("- * / 15 - 7 + 1 1 3 + 2 + 1 1", Kata.toPrefixNotation("((15 / (7 - (1 + 1))) * 3) - (2 + (1 + 1))"));
     }
 
-    @Test
-    @Ignore
-    public void testInfixToPrefixMultipleCharacterLongOperands() {
-    }
 }
