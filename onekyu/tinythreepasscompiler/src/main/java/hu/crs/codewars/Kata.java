@@ -29,7 +29,7 @@ public class Kata {
     }
 
     private String extractFunctionBody(String function) {
-        Pattern pattern = Pattern.compile("(\\[[a-zA-Z \\]*])(.*)");
+        Pattern pattern = Pattern.compile("(\\[[a-zA-Z ]*\\])(.*)");
         Matcher matcher = pattern.matcher(function);
         if (matcher.matches()) {
             if (!Objects.equals(matcher.group(2), "")) {

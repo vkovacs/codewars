@@ -73,4 +73,10 @@ public class KataTest {
         UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 1);
         Assert.assertEquals(expectedAst, new Kata().pass1("[] 1"));
     }
+
+    @Test
+    public void testUnaryOperatorWithOneArgumentReturnsConstant() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 1);
+        Assert.assertEquals(expectedAst, new Kata().pass1("[x] 1"));
+    }
 }
