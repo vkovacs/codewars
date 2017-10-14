@@ -79,4 +79,22 @@ public class KataTest {
         UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 1);
         Assert.assertEquals(expectedAst, new Kata().pass1("[x] 1"));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUnaryOperatorWithIncorrectSyntax() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 0);
+        new Kata().pass1("0");
+    }
+
+    @Test
+    public void testUnaryOperatorWithOneArgumentReturnsSameArgument() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.ARGUMENT.getValue(), 0);
+        Assert.assertEquals(expectedAst, new Kata().pass1("[x] x"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUnaryOperatorWithOneIllegalArgument() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.ARGUMENT.getValue(), 0);
+        new Kata().pass1("[x] y");
+    }
 }

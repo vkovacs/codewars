@@ -1,13 +1,19 @@
 package hu.crs.codewars;
 
+import org.hamcrest.MatcherAssert;
+
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Kata {
+    private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
+
     public List<String> compile(String prog) {
         return pass3(pass2(pass1(prog)));
     }
@@ -16,23 +22,66 @@ public class Kata {
      * Returns an un-optimized AST
      */
     public Ast pass1(String function) {
+        String functionArguments = extractFunctionArguments(function);
+        Map<String, Integer> functionArgumentsMap = calculateFunctionArgumentsMap(functionArguments);
+
 
         String functionBody = extractFunctionBody(function);
+
         if (functionBody == null) {
             return null;
         }
-        //String prefixExpression = toPrefixNotation(function);
 
-        Deque<String> tokens = tokenize(functionBody);
+        String prefixedFunctionBody = toPrefixNotation(functionBody);
 
-        return new UnOp(UnOp.Type.IMMUTABLE.getValue(), Integer.parseInt(tokens.removeFirst()));
+        return buildAst(prefixedFunctionBody, functionArgumentsMap);
+    }
+
+    private Ast buildAst(String prefixedFunctionBody, Map<String, Integer> functionArgumentsMap) {
+        if (isNumber(prefixedFunctionBody)) {
+            return new UnOp(UnOp.Type.IMMUTABLE.getValue(), Integer.valueOf(prefixedFunctionBody));
+        } else {
+            Integer order = functionArgumentsMap.get(prefixedFunctionBody);
+            if (order == null) {
+                throw new IllegalArgumentException();
+            }
+            return new UnOp(UnOp.Type.ARGUMENT.getValue(), order);
+        }
+    }
+
+    private boolean isNumber(String prefixedFunctionBody) {
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(prefixedFunctionBody);
+        return matcher.matches();
+    }
+
+    private Map<String, Integer> calculateFunctionArgumentsMap(String functionArguments) {
+        Map<String, Integer> functionArgumentsMap = new HashMap<>();
+        for (String token : tokenize(functionArguments)) {
+            int order = 0;
+            if (!token.equals("[") && !token.equals("]")) {
+                functionArgumentsMap.put(token, order);
+            }
+        }
+        return functionArgumentsMap;
+    }
+
+    private String extractFunctionArguments(String function) {
+        Pattern pattern = Pattern.compile(FUNCTION_GROUPS_PATTERN);
+        Matcher matcher = pattern.matcher(function);
+        if (matcher.matches()) {
+            if (!matcher.group(1).equals("")) {
+                return matcher.group(1);
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
     private String extractFunctionBody(String function) {
-        Pattern pattern = Pattern.compile("(\\[[a-zA-Z ]*\\])(.*)");
+        Pattern pattern = Pattern.compile(FUNCTION_GROUPS_PATTERN);
         Matcher matcher = pattern.matcher(function);
         if (matcher.matches()) {
-            if (!Objects.equals(matcher.group(2), "")) {
+            if (!matcher.group(2).equals("")) {
                 return matcher.group(2);
             }
             return null;
@@ -99,7 +148,7 @@ public class Kata {
             Character top = stack.removeFirst();
             insertOperandFirst(prefixExpression, top);
         }
-        return prefixExpression.toString();
+        return prefixExpression.toString().trim();
     }
 
     private static void insertOperandFirst(StringBuilder prefixExpression, Character top) {
