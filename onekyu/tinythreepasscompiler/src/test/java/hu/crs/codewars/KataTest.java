@@ -65,12 +65,12 @@ public class KataTest {
 
     @Test
     public void testPass1EmptyInput() {
-        Assert.assertEquals(null, new Kata().pass1(""));
+        Assert.assertEquals(null, new Kata().pass1("[]"));
     }
 
     @Test
     public void testUnaryOperatorWithOneImmutableValue() throws Exception {
         UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 1);
-        Assert.assertEquals(expectedAst, new Kata().pass1("1"));
+        Assert.assertEquals(expectedAst, new Kata().pass1("[] 1"));
     }
 }

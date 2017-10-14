@@ -1,9 +1,9 @@
 package hu.crs.codewars;
 
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,12 +15,29 @@ public class Kata {
     /**
      * Returns an un-optimized AST
      */
-    public Ast pass1(String expression) {
-        String prefixExpression = toPrefixNotation(expression);
+    public Ast pass1(String function) {
 
-        Deque<String> tokens = tokenize(expression);
+        String functionBody = extractFunctionBody(function);
+        if (functionBody == null) {
+            return null;
+        }
+        //String prefixExpression = toPrefixNotation(function);
+
+        Deque<String> tokens = tokenize(functionBody);
 
         return new UnOp(UnOp.Type.IMMUTABLE.getValue(), Integer.parseInt(tokens.removeFirst()));
+    }
+
+    private String extractFunctionBody(String function) {
+        Pattern pattern = Pattern.compile("(\\[[a-zA-Z \\]*])(.*)");
+        Matcher matcher = pattern.matcher(function);
+        if (matcher.matches()) {
+            if (!Objects.equals(matcher.group(2), "")) {
+                return matcher.group(2);
+            }
+            return null;
+        }
+        throw new IllegalArgumentException();
     }
 
     /**
