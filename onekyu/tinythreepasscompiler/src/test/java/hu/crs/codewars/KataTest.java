@@ -63,8 +63,14 @@ public class KataTest {
         Assert.assertEquals("- * / 15 - 7 + 1 1 3 + 2 + 1 1", new Kata().toPrefixNotation("((15 / (7 - (1 + 1))) * 3) - (2 + (1 + 1))"));
     }
 
+    @Test
     public void testPass1EmptyInput() {
         Assert.assertEquals(null, new Kata().pass1(""));
     }
 
+    @Test
+    public void testUnaryOperatorWithOneImmutableValue() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 1);
+        Assert.assertEquals(expectedAst, new Kata().pass1("1"));
+    }
 }

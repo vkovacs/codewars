@@ -1,5 +1,6 @@
 package hu.crs.codewars;
 
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,9 +15,12 @@ public class Kata {
     /**
      * Returns an un-optimized AST
      */
-    public Ast pass1(String prog) {
-        Deque<String> tokens = tokenize(prog);
-        return null;
+    public Ast pass1(String expression) {
+        String prefixExpression = toPrefixNotation(expression);
+
+        Deque<String> tokens = tokenize(expression);
+
+        return new UnOp(UnOp.Type.IMMUTABLE.getValue(), Integer.parseInt(tokens.removeFirst()));
     }
 
     /**
@@ -40,7 +44,6 @@ public class Kata {
         while (m.find()) {
             tokens.add(m.group());
         }
-        tokens.add("$"); // end-of-stream
         return tokens;
     }
 
