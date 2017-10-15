@@ -113,4 +113,10 @@ public class KataTest {
         BinOp expectedAst = new BinOp("+", expectedA, expectedB);
         Assert.assertEquals(expectedAst, new Kata().pass1("[x y] x + y"));
     }
+
+    @Test
+    public void testBinaryOperatorComplexFunctionBody() throws Exception {
+        BinOp expectedAst = new BinOp("/", new BinOp("+", new UnOp(UnOp.Type.ARGUMENT.getValue(), 0), new UnOp(UnOp.Type.ARGUMENT.getValue(), 1)), new UnOp(UnOp.Type.IMMUTABLE.getValue(), 2));
+        Assert.assertEquals(expectedAst, new Kata().pass1("[ x y ] ( x + y ) / 2"));
+    }
 }
