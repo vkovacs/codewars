@@ -1,21 +1,28 @@
 package hu.crs.codewars;
 
-import org.hamcrest.MatcherAssert;
-
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Kata {
     private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
-
     public List<String> compile(String prog) {
         return pass3(pass2(pass1(prog)));
+    }
+    private static Set<String> OPERATORS = new HashSet<>();
+
+    static {
+        OPERATORS.add("+");
+        OPERATORS.add("-");
+        OPERATORS.add("*");
+        OPERATORS.add("/");
     }
 
     /**
@@ -33,25 +40,40 @@ public class Kata {
         }
 
         String prefixedFunctionBody = toPrefixNotation(functionBody);
+        List<String> prefixedFunctionBodyTokens = new ArrayList<>(tokenize(prefixedFunctionBody));
 
-        return buildAst(prefixedFunctionBody, functionArgumentsMap);
+        return buildAst(prefixedFunctionBodyTokens, functionArgumentsMap);
     }
 
-    private Ast buildAst(String prefixedFunctionBody, Map<String, Integer> functionArgumentsMap) {
-        if (isNumber(prefixedFunctionBody)) {
-            return new UnOp(UnOp.Type.IMMUTABLE.getValue(), Integer.valueOf(prefixedFunctionBody));
-        } else {
-            Integer order = functionArgumentsMap.get(prefixedFunctionBody);
-            if (order == null) {
+    private Ast buildAst(List<String> tokens, Map<String, Integer> functionArgumentsMap) {
+        Deque<Ast> stack = new LinkedList<>();
+        String currentToken;
+        for (int i = tokens.size() - 1; i >= 0; i--) {
+            currentToken = tokens.get(i);
+            if (isNumber(currentToken)) {
+                stack.push(new UnOp(UnOp.Type.IMMUTABLE.getValue(), Integer.valueOf(currentToken)));
+            }
+            else if (isArgument(currentToken, functionArgumentsMap.keySet())) {
+                stack.push(new UnOp(UnOp.Type.ARGUMENT.getValue(), functionArgumentsMap.get(currentToken)));
+            } else if (OPERATORS.contains(currentToken)) {
+                //binary operator
+                Ast a = stack.removeFirst();
+                Ast b = stack.removeFirst();
+                stack.push(new BinOp(String.valueOf(currentToken), a, b));
+            } else {
                 throw new IllegalArgumentException();
             }
-            return new UnOp(UnOp.Type.ARGUMENT.getValue(), order);
         }
+        return stack.removeFirst();
     }
 
-    private boolean isNumber(String prefixedFunctionBody) {
+    private boolean isArgument(String currentToken, Set<String> arguments) {
+        return arguments.contains(currentToken);
+    }
+
+    private boolean isNumber(String character) {
         Pattern pattern = Pattern.compile("[0-9]+");
-        Matcher matcher = pattern.matcher(prefixedFunctionBody);
+        Matcher matcher = pattern.matcher(character);
         return matcher.matches();
     }
 
@@ -116,7 +138,7 @@ public class Kata {
     public String toPrefixNotation(String infixExpression) {
         Deque<Character> stack = new LinkedList<>();
         StringBuilder prefixExpression = new StringBuilder();
-        for (int i = infixExpression.length() - 1; i > - 1; i--) {
+        for (int i = infixExpression.length() - 1; i > -1; i--) {
             char currentCharacter = infixExpression.charAt(i);
 
             if (!isOperand(currentCharacter) && !isParenthesis(currentCharacter)) {

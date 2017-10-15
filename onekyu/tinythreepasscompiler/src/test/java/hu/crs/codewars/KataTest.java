@@ -97,4 +97,12 @@ public class KataTest {
         UnOp expectedAst = new UnOp(UnOp.Type.ARGUMENT.getValue(), 0);
         new Kata().pass1("[x] y");
     }
+
+    @Test
+    public void testBinaryOperatorReturnsConstant() throws Exception {
+        UnOp expectedA = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 1);
+        UnOp expectedB = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 2);
+        BinOp expectedAst = new BinOp("+", expectedA, expectedB);
+        Assert.assertEquals(expectedAst, new Kata().pass1("[x y] 1 + 2"));
+    }
 }
