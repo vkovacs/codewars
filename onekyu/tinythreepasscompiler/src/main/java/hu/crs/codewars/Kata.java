@@ -79,10 +79,11 @@ public class Kata {
 
     private Map<String, Integer> calculateFunctionArgumentsMap(String functionArguments) {
         Map<String, Integer> functionArgumentsMap = new HashMap<>();
+        int order = 0;
         for (String token : tokenize(functionArguments)) {
-            int order = 0;
             if (!token.equals("[") && !token.equals("]")) {
                 functionArgumentsMap.put(token, order);
+                order++;
             }
         }
         return functionArgumentsMap;
