@@ -4,6 +4,9 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Provided by codewars
+ */
 class Simulator {
     public static int simulate(List<String> asm, int... argv) {
         int r0 = 0;
@@ -20,7 +23,8 @@ class Simulator {
                 case "AD": r0 += r1; break;
                 case "SU": r0 -= r1; break;
                 case "MU": r0 *= r1; break;
-                case "DI": r0 /= r1; break;
+                case "DI": if (r1 == 0) { throw new IllegalArgumentException(); }
+                        r0 /= r1; break;
             }
         }
         return r0;
