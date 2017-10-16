@@ -55,7 +55,7 @@ public class Kata {
             }
             else if (isArgument(currentToken, functionArgumentsMap.keySet())) {
                 stack.push(new UnOp(UnOp.Type.ARGUMENT.getValue(), functionArgumentsMap.get(currentToken)));
-            } else if (OPERATORS.contains(currentToken)) {
+            } else if (isBinop(currentToken)) {
                 //binary operator
                 Ast a = stack.removeFirst();
                 Ast b = stack.removeFirst();
@@ -65,6 +65,10 @@ public class Kata {
             }
         }
         return stack.removeFirst();
+    }
+
+    private boolean isBinop(String op) {
+        return OPERATORS.contains(op);
     }
 
     private boolean isArgument(String currentToken, Set<String> arguments) {
@@ -116,8 +120,50 @@ public class Kata {
      * Returns an AST with constant expressions reduced
      */
     public Ast pass2(Ast ast) {
-        return null;
+        return simplify(ast);
     }
+
+    private Ast simplify(Ast ast) {
+        String op = ast.op();
+        if (isBinop(op)) {
+            BinOp binOp = (BinOp) ast;
+            Ast a = binOp.a();
+            Ast b = binOp.b();
+
+            if (!isBinop(a.op()) && !isBinop(b.op())) {
+                UnOp aUnop = (UnOp) a;
+                UnOp bUnop = (UnOp) b;
+
+                int result = Integer.MIN_VALUE;
+                if (aUnop.op().equals(UnOp.Type.IMMUTABLE.getValue()) || bUnop.op().equals(UnOp.Type.IMMUTABLE.getValue())) {
+                    switch (op) {
+                        case "+" :
+                            result = aUnop.value() + bUnop.value();break;
+                        case "-" :
+                            result = aUnop.value() - bUnop.value();break;
+                        case "*" :
+                            result = aUnop.value() * bUnop.value();break;
+                        case "/" :
+                            result = aUnop.value() / bUnop.value();break;
+                        default:
+                            throw new IllegalArgumentException();
+                    }
+                }
+                return new UnOp(UnOp.Type.IMMUTABLE.getValue(), result);
+            } else if (isBinop(a.op()) && !isBinop(b.op())) {
+                ((BinOp) ast).setA(simplify(a));
+                return ast;
+            } else {
+                ((BinOp) ast).setB(simplify(b));
+                return ast;
+            }
+        } else {
+            return ast;
+        }
+    }
+
+
+
 
     /**
      * Returns assembly instructions

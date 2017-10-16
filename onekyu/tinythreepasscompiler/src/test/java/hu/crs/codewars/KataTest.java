@@ -119,4 +119,11 @@ public class KataTest {
         BinOp expectedAst = new BinOp("/", new BinOp("+", new UnOp(UnOp.Type.ARGUMENT.getValue(), 0), new UnOp(UnOp.Type.ARGUMENT.getValue(), 1)), new UnOp(UnOp.Type.IMMUTABLE.getValue(), 2));
         Assert.assertEquals(expectedAst, new Kata().pass1("[ x y ] ( x + y ) / 2"));
     }
+
+    @Test
+    public void testASTSimplification() throws Exception {
+        BinOp expectedAst = new BinOp("+", new UnOp("arg", 0), new UnOp(UnOp.Type.IMMUTABLE.getValue(), 10));
+        Kata kata = new Kata();
+        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[ x ] x + 2 * 5")));
+    }
 }
