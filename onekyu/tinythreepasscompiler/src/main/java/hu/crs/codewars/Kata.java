@@ -51,10 +51,10 @@ public class Kata {
         for (int i = tokens.size() - 1; i >= 0; i--) {
             currentToken = tokens.get(i);
             if (isNumber(currentToken)) {
-                stack.push(new UnOp(UnOp.Type.IMMUTABLE.getValue(), Integer.valueOf(currentToken)));
+                stack.push(new UnOp(UnOp.IMMUTABLE, Integer.valueOf(currentToken)));
             }
             else if (isArgument(currentToken, functionArgumentsMap.keySet())) {
-                stack.push(new UnOp(UnOp.Type.ARGUMENT.getValue(), functionArgumentsMap.get(currentToken)));
+                stack.push(new UnOp(UnOp.ARGUMENT, functionArgumentsMap.get(currentToken)));
             } else if (isBinop(currentToken)) {
                 //binary operator
                 Ast a = stack.removeFirst();
@@ -135,7 +135,7 @@ public class Kata {
                 UnOp bUnop = (UnOp) b;
 
                 int result = Integer.MIN_VALUE;
-                if (aUnop.op().equals(UnOp.Type.IMMUTABLE.getValue()) && bUnop.op().equals(UnOp.Type.IMMUTABLE.getValue())) {
+                if (aUnop.op().equals(UnOp.IMMUTABLE) && bUnop.op().equals(UnOp.IMMUTABLE)) {
                     switch (op) {
                         case "+" :
                             result = aUnop.value() + bUnop.value();break;
@@ -146,7 +146,7 @@ public class Kata {
                         case "/" :
                             result = aUnop.value() / bUnop.value();break;
                     }
-                    return new UnOp(UnOp.Type.IMMUTABLE.getValue(), result);
+                    return new UnOp(UnOp.IMMUTABLE, result);
                 } else {
                     return ast;
                 }

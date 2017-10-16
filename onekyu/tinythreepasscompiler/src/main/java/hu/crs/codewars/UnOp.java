@@ -1,19 +1,8 @@
 package hu.crs.codewars;
 
 final class UnOp implements Ast {
-  enum Type{
-    IMMUTABLE("imm"), ARGUMENT("arg");
-
-    private String value;
-
-    Type(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-  }
+  public static final String IMMUTABLE = "imm";
+  public static final String ARGUMENT = "arg";
 
   private String operation;
   private int value;
