@@ -94,7 +94,6 @@ public class KataTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testUnaryOperatorWithOneIllegalArgument() throws Exception {
-        UnOp expectedAst = new UnOp(UnOp.Type.ARGUMENT.getValue(), 0);
         new Kata().pass1("[x] y");
     }
 
@@ -125,5 +124,55 @@ public class KataTest {
         BinOp expectedAst = new BinOp("+", new UnOp("arg", 0), new UnOp(UnOp.Type.IMMUTABLE.getValue(), 10));
         Kata kata = new Kata();
         Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[ x ] x + 2 * 5")));
+    }
+
+    @Test
+    public void testUnaryOperatorWithOneImmutableValueSimplified() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 1);
+        Kata kata = new Kata();
+        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[] 1")));
+    }
+
+    @Test
+    public void testUnaryOperatorWithOneArgumentReturnsConstantSimplified() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 1);
+        Kata kata = new Kata();
+        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[x] 1")));
+    }
+
+    @Test
+    public void testUnaryOperatorWithOneArgumentReturnsSameArgumentSimplified() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.ARGUMENT.getValue(), 0);
+        Kata kata = new Kata();
+        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[x] x")));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testUnaryOperatorWithOneIllegalArgumentSimplified() throws Exception {
+        Kata kata = new Kata();
+        kata.pass2(kata.pass1("[x] y"));
+    }
+
+    @Test
+    public void testBinaryOperatorReturnsConstantSimplified() throws Exception {
+        UnOp expectedAst = new UnOp(UnOp.Type.IMMUTABLE.getValue(), 3);
+        Kata kata = new Kata();
+        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[x y] 1 + 2")));
+    }
+
+    @Test
+    public void testBinaryOperatorReturnsArgumentsSimplified() throws Exception {
+        UnOp expectedA = new UnOp(UnOp.Type.ARGUMENT.getValue(), 0);
+        UnOp expectedB = new UnOp(UnOp.Type.ARGUMENT.getValue(), 1);
+        BinOp expectedAst = new BinOp("+", expectedA, expectedB);
+        Kata kata = new Kata();
+        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[x y] x + y")));
+    }
+
+    @Test
+    public void testBinaryOperatorComplexFunctionBodySimplified() throws Exception {
+        BinOp expectedAst = new BinOp("/", new BinOp("+", new UnOp(UnOp.Type.ARGUMENT.getValue(), 0), new UnOp(UnOp.Type.ARGUMENT.getValue(), 1)), new UnOp(UnOp.Type.IMMUTABLE.getValue(), 2));
+        Kata kata = new Kata();
+        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[ x y ] ( x + y ) / 2")));
     }
 }

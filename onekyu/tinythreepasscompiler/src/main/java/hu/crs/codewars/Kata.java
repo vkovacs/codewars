@@ -135,7 +135,7 @@ public class Kata {
                 UnOp bUnop = (UnOp) b;
 
                 int result = Integer.MIN_VALUE;
-                if (aUnop.op().equals(UnOp.Type.IMMUTABLE.getValue()) || bUnop.op().equals(UnOp.Type.IMMUTABLE.getValue())) {
+                if (aUnop.op().equals(UnOp.Type.IMMUTABLE.getValue()) && bUnop.op().equals(UnOp.Type.IMMUTABLE.getValue())) {
                     switch (op) {
                         case "+" :
                             result = aUnop.value() + bUnop.value();break;
@@ -145,11 +145,11 @@ public class Kata {
                             result = aUnop.value() * bUnop.value();break;
                         case "/" :
                             result = aUnop.value() / bUnop.value();break;
-                        default:
-                            throw new IllegalArgumentException();
                     }
+                    return new UnOp(UnOp.Type.IMMUTABLE.getValue(), result);
+                } else {
+                    return ast;
                 }
-                return new UnOp(UnOp.Type.IMMUTABLE.getValue(), result);
             } else if (isBinop(a.op()) && !isBinop(b.op())) {
                 ((BinOp) ast).setA(simplify(a));
                 return ast;
