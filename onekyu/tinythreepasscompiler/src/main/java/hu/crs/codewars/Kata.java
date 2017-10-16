@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 
 public class Kata {
     private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
-    public List<String> compile(String prog) {
-        return pass3(pass2(pass1(prog)));
-    }
     private static Set<String> OPERATORS = new HashSet<>();
-
     static {
         OPERATORS.add("+");
         OPERATORS.add("-");
         OPERATORS.add("*");
         OPERATORS.add("/");
+    }
+
+    public List<String> compile(String prog) {
+        return pass3(pass2(pass1(prog)));
     }
 
     /**
@@ -43,6 +43,20 @@ public class Kata {
         List<String> prefixedFunctionBodyTokens = new ArrayList<>(tokenize(prefixedFunctionBody));
 
         return buildAst(prefixedFunctionBodyTokens, functionArgumentsMap);
+    }
+
+    /**
+     * Returns an AST with constant expressions reduced
+     */
+    public Ast pass2(Ast ast) {
+        return optimize(ast);
+    }
+
+    /**
+     * Returns assembly instructions
+     */
+    public List<String> pass3(Ast ast) {
+        return null;
     }
 
     private Ast buildAst(List<String> tokens, Map<String, Integer> functionArgumentsMap) {
@@ -116,14 +130,7 @@ public class Kata {
         throw new IllegalArgumentException();
     }
 
-    /**
-     * Returns an AST with constant expressions reduced
-     */
-    public Ast pass2(Ast ast) {
-        return simplify(ast);
-    }
-
-    private Ast simplify(Ast ast) {
+    private Ast optimize(Ast ast) {
         String op = ast.op();
         if (isBinop(op)) {
             BinOp binOp = (BinOp) ast;
@@ -151,22 +158,15 @@ public class Kata {
                     return ast;
                 }
             } else if (isBinop(a.op()) && !isBinop(b.op())) {
-                ((BinOp) ast).setA(simplify(a));
+                ((BinOp) ast).setA(optimize(a));
                 return ast;
             } else {
-                ((BinOp) ast).setB(simplify(b));
+                ((BinOp) ast).setB(optimize(b));
                 return ast;
             }
         } else {
             return ast;
         }
-    }
-
-    /**
-     * Returns assembly instructions
-     */
-    public List<String> pass3(Ast ast) {
-        return null;
     }
 
     private static Deque<String> tokenize(String prog) {
