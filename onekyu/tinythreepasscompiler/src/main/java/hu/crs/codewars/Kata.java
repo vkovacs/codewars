@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Kata {
     private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
@@ -31,7 +32,6 @@ public class Kata {
     public Ast pass1(String function) {
         String functionArguments = extractFunctionArguments(function);
         Map<String, Integer> functionArgumentsMap = calculateFunctionArgumentsMap(functionArguments);
-
 
         String functionBody = extractFunctionBody(function);
 
@@ -162,9 +162,6 @@ public class Kata {
         }
     }
 
-
-
-
     /**
      * Returns assembly instructions
      */
@@ -183,57 +180,50 @@ public class Kata {
     }
 
     public String toPrefixNotation(String infixExpression) {
-        Deque<Character> stack = new LinkedList<>();
-        StringBuilder prefixExpression = new StringBuilder();
-        for (int i = infixExpression.length() - 1; i > -1; i--) {
-            char currentCharacter = infixExpression.charAt(i);
+        Deque<String> tokens = tokenize(infixExpression);
 
-            if (!isOperand(currentCharacter) && !isParenthesis(currentCharacter)) {
-                if (currentCharacter != ' ' || prefixExpression.charAt(0) != ' ') {
-                    prefixExpression.insert(0, currentCharacter);
-                }
-            } else if (currentCharacter == ')') {
-                stack.push(currentCharacter);
-            } else if (currentCharacter == '(') {
-                Character top = stack.removeFirst();
-                while (top != ')') {
-                    insertOperandFirst(prefixExpression, top);
+        Deque<String> stack = new LinkedList<>();
+        Deque<String> prefixDeck = new LinkedList<>();
+        while (tokens.size() > 0) {
+            String currentToken = tokens.removeLast();
+
+            if (!isOperand(currentToken) && !isParenthesis(currentToken)) {
+                    prefixDeck.addFirst(currentToken);
+
+            } else if (")".equals(currentToken)) {
+                stack.push(currentToken);
+            } else if ("(".equals(currentToken)) {
+                String top = stack.removeFirst();
+                while (!")".equals(top)) {
+                    prefixDeck.addFirst(top);
                     top = stack.removeFirst();
                 }
             } else {
                 //current character is an operand
-                Character top = stack.peekFirst();
-                while (!stack.isEmpty() && top != ')' && firstHasHigherPrecedence(top, currentCharacter) > 0) {
-                    insertOperandFirst(prefixExpression, top);
+                String top = stack.peekFirst();
+                while (!stack.isEmpty() && !")".equals(top) && firstHasHigherPrecedence(top, currentToken) > 0) {
+                    prefixDeck.addFirst(top);
                     stack.removeFirst();
                     top = stack.peekFirst();
                 }
-                stack.push(currentCharacter);
+                stack.push(currentToken);
             }
         }
-
         //leftovers in stack
         while (stack.size() > 0) {
-            Character top = stack.removeFirst();
-            insertOperandFirst(prefixExpression, top);
+            String top = stack.removeFirst();
+            prefixDeck.addFirst(top);
         }
-        return prefixExpression.toString().trim();
+        return prefixDeck.stream()
+                .collect(Collectors.joining(" "));
     }
 
-    private static void insertOperandFirst(StringBuilder prefixExpression, Character top) {
-        if (prefixExpression.charAt(0) == ' ') {
-            prefixExpression.insert(0, top);
-        } else {
-            prefixExpression.insert(0, top + " ");
-        }
+    private static boolean isParenthesis(String currentString) {
+        return "(".equals(currentString) || ")".equals(currentString);
     }
 
-    private static boolean isParenthesis(char currentCharacter) {
-        return currentCharacter == '(' || currentCharacter == ')';
-    }
-
-    private static boolean isOperand(char c) {
-        return c == '+' || c == '-' || c == '/' || c == '*';
+    private static boolean isOperand(String string) {
+        return "+".equals(string) || "-".equals(string) || "/".equals(string) || "*".equals(string);
     }
 
     /**
@@ -241,12 +231,12 @@ public class Kata {
      * Returns 1 if op0 has higher precedence
      * Return -1 if op1 has higher precedence
      */
-    private static int firstHasHigherPrecedence(char op0, char op1) {
-        if ((op0 == '+' || op0 == '-') && (op1 == '+' || op1 == '-') || (op0 == '*' || op0 == '/') && (op1 == '*' || op1 == '/')) {
+    private static int firstHasHigherPrecedence(String op0, String op1) {
+        if (("+".equals(op0) || "-".equals(op0)) && ("+".equals(op1) || "-".equals(op1)) || ("*".equals(op0) || "/".equals(op0)) && ("*".equals(op1) || "/".equals(op1))) {
             return 0;
-        } else if (((op0 == '+' || op0 == '-') && (op1 == '/' || op1 == '*'))) {
+        } else if ((("+".equals(op0) || "-".equals(op0)) && ("/".equals(op1) || "*".equals(op1)))) {
             return -1;
-        } else if ((op0 == '/' || op0 == '*') && (op1 == '+' || op1 == '-')) {
+        } else if (("/".equals(op0) || "*".equals(op0)) && ("+".equals(op1) || "-".equals(op1))) {
             return 1;
         } else {
             throw new IllegalStateException();
