@@ -24,14 +24,6 @@ final class BinOp implements Ast {
     return b;
   }
 
-  public void setA(Ast a) {
-    this.a = a;
-  }
-
-  public void setB(Ast b) {
-    this.b = b;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

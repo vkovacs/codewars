@@ -161,11 +161,9 @@ public class Kata {
                     return ast;
                 }
             } else if (isBinop(a.op()) && !isBinop(b.op())) {
-                ((BinOp) ast).setA(optimize(a));
-                return ast;
+                return new BinOp(op, optimize(a), b);
             } else {
-                ((BinOp) ast).setB(optimize(b));
-                return ast;
+                return new BinOp(op, a, optimize(b));
             }
         } else {
             return ast;
