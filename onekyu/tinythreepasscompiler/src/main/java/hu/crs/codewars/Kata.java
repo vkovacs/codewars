@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Kata {
+    public static final String IMMUTABLE = "imm";
+    public static final String ARGUMENT = "arg";
+
     private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
     private static Set<String> OPERATORS = new HashSet<>();
     static {
@@ -65,10 +68,10 @@ public class Kata {
         for (int i = tokens.size() - 1; i >= 0; i--) {
             currentToken = tokens.get(i);
             if (isNumber(currentToken)) {
-                stack.push(new UnOp(UnOp.IMMUTABLE, Integer.valueOf(currentToken)));
+                stack.push(new UnOp(IMMUTABLE, Integer.valueOf(currentToken)));
             }
             else if (isArgument(currentToken, functionArgumentsMap.keySet())) {
-                stack.push(new UnOp(UnOp.ARGUMENT, functionArgumentsMap.get(currentToken)));
+                stack.push(new UnOp(ARGUMENT, functionArgumentsMap.get(currentToken)));
             } else if (isBinop(currentToken)) {
                 //binary operator
                 Ast a = stack.removeFirst();
@@ -142,18 +145,18 @@ public class Kata {
                 UnOp bUnop = (UnOp) b;
 
                 int result = Integer.MIN_VALUE;
-                if (aUnop.op().equals(UnOp.IMMUTABLE) && bUnop.op().equals(UnOp.IMMUTABLE)) {
+                if (aUnop.op().equals(IMMUTABLE) && bUnop.op().equals(IMMUTABLE)) {
                     switch (op) {
                         case "+" :
-                            result = aUnop.value() + bUnop.value();break;
+                            result = aUnop.n() + bUnop.n();break;
                         case "-" :
-                            result = aUnop.value() - bUnop.value();break;
+                            result = aUnop.n() - bUnop.n();break;
                         case "*" :
-                            result = aUnop.value() * bUnop.value();break;
+                            result = aUnop.n() * bUnop.n();break;
                         case "/" :
-                            result = aUnop.value() / bUnop.value();break;
+                            result = aUnop.n() / bUnop.n();break;
                     }
-                    return new UnOp(UnOp.IMMUTABLE, result);
+                    return new UnOp(IMMUTABLE, result);
                 } else {
                     return ast;
                 }

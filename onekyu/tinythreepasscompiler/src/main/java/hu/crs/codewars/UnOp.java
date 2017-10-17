@@ -1,8 +1,6 @@
 package hu.crs.codewars;
 
 final class UnOp implements Ast {
-  public static final String IMMUTABLE = "imm";
-  public static final String ARGUMENT = "arg";
 
   private String operation;
   private int value;
@@ -17,7 +15,7 @@ final class UnOp implements Ast {
     return operation;
   }
 
-  public int value() {
+  public int n() {
     return value;
   }
 
