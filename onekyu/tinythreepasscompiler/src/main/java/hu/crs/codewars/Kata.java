@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Kata {
-    public static final String IMMUTABLE = "imm";
+    public static final String IMMEDIATE = "imm";
     public static final String ARGUMENT = "arg";
 
     private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
@@ -68,7 +68,7 @@ public class Kata {
         for (int i = tokens.size() - 1; i >= 0; i--) {
             currentToken = tokens.get(i);
             if (isNumber(currentToken)) {
-                stack.push(new UnOp(IMMUTABLE, Integer.valueOf(currentToken)));
+                stack.push(new UnOp(IMMEDIATE, Integer.valueOf(currentToken)));
             }
             else if (isArgument(currentToken, functionArgumentsMap.keySet())) {
                 stack.push(new UnOp(ARGUMENT, functionArgumentsMap.get(currentToken)));
@@ -145,7 +145,7 @@ public class Kata {
                 UnOp bUnop = (UnOp) b;
 
                 int result = Integer.MIN_VALUE;
-                if (aUnop.op().equals(IMMUTABLE) && bUnop.op().equals(IMMUTABLE)) {
+                if (aUnop.op().equals(IMMEDIATE) && bUnop.op().equals(IMMEDIATE)) {
                     switch (op) {
                         case "+" :
                             result = aUnop.n() + bUnop.n();break;
@@ -156,7 +156,7 @@ public class Kata {
                         case "/" :
                             result = aUnop.n() / bUnop.n();break;
                     }
-                    return new UnOp(IMMUTABLE, result);
+                    return new UnOp(IMMEDIATE, result);
                 } else {
                     return ast;
                 }
