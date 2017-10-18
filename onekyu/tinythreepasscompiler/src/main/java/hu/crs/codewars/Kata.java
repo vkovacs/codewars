@@ -165,7 +165,33 @@ public class Kata {
             } else if (!isBinop(a.op()) && isBinop(b.op())) {
                 return new BinOp(op, a, optimize(b));
             } else {
-                return new BinOp(op, optimize(a), optimize(b));
+                /**
+                 * Optimize the case when
+                 *              +
+                 *             / \
+                 *            *   +
+                 *           /\   /\
+                 *          2  2 1  3
+                 *
+                 *          became
+                 *
+                 **             +
+                 *             / \
+                 *            4   4
+                 *
+                 *       and need to be further optimized even for multiple levels.
+                 *
+                 */
+                BinOp opeStepOptimizedBinop = new BinOp(op, optimize(a), optimize(b));
+
+                if (!isBinop(opeStepOptimizedBinop.a().op()) && !isBinop(opeStepOptimizedBinop.b().op())) {
+                    UnOp aUnop = (UnOp) opeStepOptimizedBinop.a();
+                    UnOp bUnop = (UnOp) opeStepOptimizedBinop.b();
+                    if (aUnop.op().equals(IMMEDIATE) && bUnop.op().equals(IMMEDIATE)) {
+                        return optimize(opeStepOptimizedBinop);
+                    }
+                }
+                return opeStepOptimizedBinop;
             }
         } else {
             return ast;
