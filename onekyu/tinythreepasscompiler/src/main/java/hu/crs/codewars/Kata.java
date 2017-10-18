@@ -162,8 +162,10 @@ public class Kata {
                 }
             } else if (isBinop(a.op()) && !isBinop(b.op())) {
                 return new BinOp(op, optimize(a), b);
-            } else {
+            } else if (!isBinop(a.op()) && isBinop(b.op())) {
                 return new BinOp(op, a, optimize(b));
+            } else {
+                return new BinOp(op, optimize(a), optimize(b));
             }
         } else {
             return ast;
