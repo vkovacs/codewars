@@ -18,6 +18,7 @@ public class Kata {
 
     private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
     private static Set<String> OPERATORS = new HashSet<>();
+
     static {
         OPERATORS.add("+");
         OPERATORS.add("-");
@@ -69,8 +70,7 @@ public class Kata {
             currentToken = tokens.get(i);
             if (isNumber(currentToken)) {
                 stack.push(new UnOp(IMMEDIATE, Integer.valueOf(currentToken)));
-            }
-            else if (isArgument(currentToken, functionArgumentsMap.keySet())) {
+            } else if (isArgument(currentToken, functionArgumentsMap.keySet())) {
                 stack.push(new UnOp(ARGUMENT, functionArgumentsMap.get(currentToken)));
             } else if (isBinop(currentToken)) {
                 //binary operator
@@ -140,26 +140,26 @@ public class Kata {
             Ast a = binOp.a();
             Ast b = binOp.b();
 
-            if (!isBinop(a.op()) && !isBinop(b.op())) {
+            if (isEligibleForContraction(a, b)) {
                 UnOp aUnop = (UnOp) a;
                 UnOp bUnop = (UnOp) b;
 
                 int result = Integer.MIN_VALUE;
-                if (aUnop.op().equals(IMMEDIATE) && bUnop.op().equals(IMMEDIATE)) {
-                    switch (op) {
-                        case "+" :
-                            result = aUnop.n() + bUnop.n();break;
-                        case "-" :
-                            result = aUnop.n() - bUnop.n();break;
-                        case "*" :
-                            result = aUnop.n() * bUnop.n();break;
-                        case "/" :
-                            result = aUnop.n() / bUnop.n();break;
-                    }
-                    return new UnOp(IMMEDIATE, result);
-                } else {
-                    return ast;
+                switch (op) {
+                    case "+":
+                        result = aUnop.n() + bUnop.n();
+                        break;
+                    case "-":
+                        result = aUnop.n() - bUnop.n();
+                        break;
+                    case "*":
+                        result = aUnop.n() * bUnop.n();
+                        break;
+                    case "/":
+                        result = aUnop.n() / bUnop.n();
+                        break;
                 }
+                return new UnOp(IMMEDIATE, result);
             } else if (isBinop(a.op()) && !isBinop(b.op())) {
                 return new BinOp(op, optimize(a), b);
             } else if (!isBinop(a.op()) && isBinop(b.op())) {
@@ -182,20 +182,25 @@ public class Kata {
                  *       and need to be further optimized even for multiple levels.
                  *
                  */
-                BinOp opeStepOptimizedBinop = new BinOp(op, optimize(a), optimize(b));
-
-                if (!isBinop(opeStepOptimizedBinop.a().op()) && !isBinop(opeStepOptimizedBinop.b().op())) {
-                    UnOp aUnop = (UnOp) opeStepOptimizedBinop.a();
-                    UnOp bUnop = (UnOp) opeStepOptimizedBinop.b();
-                    if (aUnop.op().equals(IMMEDIATE) && bUnop.op().equals(IMMEDIATE)) {
-                        return optimize(opeStepOptimizedBinop);
-                    }
+                BinOp oneLevelOptimizedBinop = new BinOp(op, optimize(a), optimize(b));
+                if (isEligibleForContraction(oneLevelOptimizedBinop.a(), oneLevelOptimizedBinop.b())) {
+                    return optimize(oneLevelOptimizedBinop);
                 }
-                return opeStepOptimizedBinop;
+                return oneLevelOptimizedBinop;
             }
-        } else {
-            return ast;
         }
+        return ast;
+    }
+
+    public boolean isEligibleForContraction(Ast a, Ast b) {
+        if (!isBinop(a.op()) && !isBinop(b.op())) {
+            UnOp aUnop = (UnOp) a;
+            UnOp bUnop = (UnOp) b;
+            if (aUnop.op().equals(IMMEDIATE) && bUnop.op().equals(IMMEDIATE)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static Deque<String> tokenize(String prog) {
@@ -217,7 +222,7 @@ public class Kata {
             String currentToken = tokens.removeLast();
 
             if (!isOperand(currentToken) && !isParenthesis(currentToken)) {
-                    prefixDeck.addFirst(currentToken);
+                prefixDeck.addFirst(currentToken);
 
             } else if (")".equals(currentToken)) {
                 stack.push(currentToken);
