@@ -199,4 +199,12 @@ public class KataTest {
         Assert.assertEquals(3, Simulator.simulate(asm));
     }
 
+    @Test
+    public void testBinaryOperatorReturnsArgumentsExecuted() throws Exception {
+        String function = "[x y] x + y";
+        Kata kata = new Kata();
+        List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
+        Assert.assertEquals(7, Simulator.simulate(asm, 3, 4));
+    }
+
 }

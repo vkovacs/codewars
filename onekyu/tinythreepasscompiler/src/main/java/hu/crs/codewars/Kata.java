@@ -67,17 +67,17 @@ public class Kata {
     private List<String> walk(Ast ast) {
         if (isBinop(ast.op())) {
             BinOp binOp = ((BinOp) ast);
-            if (isEligibleForContraction(binOp.a(), binOp.b())) {
-                List<String> asm = new ArrayList<>();
-                UnOp aUnop = (UnOp) binOp.a();
-                UnOp bUnop = (UnOp) binOp.b();
 
-                asm.add("IM " + aUnop.n());
-                asm.add("SW");
-                asm.add("IM " + bUnop.n());
-                asm.add("AD");
-                return asm;
-            }
+            List<String> asm = new ArrayList<>();
+            UnOp aUnop = (UnOp) binOp.a();
+            UnOp bUnop = (UnOp) binOp.b();
+
+            asm.add("AR " + aUnop.n());
+            asm.add("SW");
+            asm.add("AR " + bUnop.n());
+            asm.add("AD");
+            return asm;
+
         } else {
             UnOp unOp = (UnOp) ast;
             int factor = unOp.n();
@@ -86,7 +86,6 @@ public class Kata {
             }
             return Arrays.asList("AR " + factor);
         }
-        return new ArrayList<>();
     }
 
     private Ast buildAst(List<String> tokens, Map<String, Integer> functionArgumentsMap) {
