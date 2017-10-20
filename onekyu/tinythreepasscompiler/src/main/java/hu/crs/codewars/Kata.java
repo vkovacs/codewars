@@ -64,6 +64,14 @@ public class Kata {
         return walk(ast);
     }
 
+    private String compileUnop(UnOp unOp) {
+        if (IMMEDIATE.equals(unOp.op())) {
+            return "IM " + unOp.n();
+        }
+
+        return "AR " + unOp.n();
+    }
+
     private List<String> walk(Ast ast) {
         if (isBinop(ast.op())) {
             BinOp binOp = ((BinOp) ast);
@@ -72,9 +80,9 @@ public class Kata {
             UnOp aUnop = (UnOp) binOp.a();
             UnOp bUnop = (UnOp) binOp.b();
 
-            asm.add("AR " + aUnop.n());
+            asm.add(compileUnop(aUnop));
             asm.add("SW");
-            asm.add("AR " + bUnop.n());
+            asm.add(compileUnop(bUnop));
             asm.add("AD");
             return asm;
 
