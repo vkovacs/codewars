@@ -176,10 +176,18 @@ public class KataTest {
     }
 
     @Test
-    public void testUnaryOperatorWithOneImmutableValueCompiled() throws Exception {
+    public void testUnaryOperatorWithOneImmutableValueExecuted() throws Exception {
         String function = "[] 1";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
         Assert.assertEquals(1, Simulator.simulate(asm));
+    }
+
+    @Test
+    public void testUnaryOperatorWithOneArgumentReturnsSameArgumentExecuted() throws Exception {
+        String function = "[x] x";
+        Kata kata = new Kata();
+        List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
+        Assert.assertEquals(2, Simulator.simulate(asm, 2));
     }
 }

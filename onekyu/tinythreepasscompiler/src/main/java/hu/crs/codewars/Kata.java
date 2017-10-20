@@ -65,7 +65,12 @@ public class Kata {
     }
 
     private List<String> walk(Ast ast) {
-        return Arrays.asList("IM 1");
+        UnOp unOp = (UnOp) ast;
+        int factor = unOp.n();
+        if (unOp.op().equals(IMMEDIATE)) {
+            return Arrays.asList("IM 1");
+        }
+        return Arrays.asList("AR " + factor);
     }
 
     private Ast buildAst(List<String> tokens, Map<String, Integer> functionArgumentsMap) {
@@ -97,9 +102,9 @@ public class Kata {
         return arguments.contains(currentToken);
     }
 
-    private boolean isNumber(String character) {
+    private boolean isNumber(String factor) {
         Pattern pattern = Pattern.compile("[0-9]+");
-        Matcher matcher = pattern.matcher(character);
+        Matcher matcher = pattern.matcher(factor);
         return matcher.matches();
     }
 
