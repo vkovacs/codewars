@@ -174,4 +174,12 @@ public class KataTest {
         Kata kata = new Kata();
         Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[ x y ] ( x + y ) / 2")));
     }
+
+    @Test
+    public void testUnaryOperatorWithOneImmutableValueCompiled() throws Exception {
+        String function = "[] 1";
+        Kata kata = new Kata();
+        List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
+        Assert.assertEquals(1, Simulator.simulate(asm));
+    }
 }

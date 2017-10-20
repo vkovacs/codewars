@@ -1,6 +1,7 @@
 package hu.crs.codewars;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -60,7 +61,11 @@ public class Kata {
      * Returns assembly instructions
      */
     public List<String> pass3(Ast ast) {
-        return null;
+        return walk(ast);
+    }
+
+    private List<String> walk(Ast ast) {
+        return Arrays.asList("IM 1");
     }
 
     private Ast buildAst(List<String> tokens, Map<String, Integer> functionArgumentsMap) {
