@@ -190,4 +190,13 @@ public class KataTest {
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
         Assert.assertEquals(2, Simulator.simulate(asm, 2));
     }
+
+    @Test
+    public void testBinaryOperatorReturnsConstantExecuted() throws Exception {
+        String function = "[] 1 + 2";
+        Kata kata = new Kata();
+        List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
+        Assert.assertEquals(3, Simulator.simulate(asm));
+    }
+
 }
