@@ -215,4 +215,12 @@ public class KataTest {
         Assert.assertEquals(5, Simulator.simulate(asm, 3));
     }
 
+    @Test
+    public void testBinaryOperatorReturnsOneIntermediateMinusOneArgumentsExecuted() throws Exception {
+        String function = "[x] x - 2";
+        Kata kata = new Kata();
+        List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
+        Assert.assertEquals(1, Simulator.simulate(asm, 3));
+    }
+
 }

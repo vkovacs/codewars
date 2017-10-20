@@ -72,6 +72,15 @@ public class Kata {
         return "AR " + unOp.n();
     }
 
+    private String compileOperator(String operator) {
+        if ("+".equals(operator)) {
+            return "AD";
+        } else if ("-".equals(operator)) {
+            return "SU";
+        }
+        throw new IllegalArgumentException();
+    }
+
     private List<String> walk(Ast ast) {
         if (isBinop(ast.op())) {
             BinOp binOp = ((BinOp) ast);
@@ -80,10 +89,10 @@ public class Kata {
             UnOp aUnop = (UnOp) binOp.a();
             UnOp bUnop = (UnOp) binOp.b();
 
-            asm.add(compileUnop(aUnop));
-            asm.add("SW");
             asm.add(compileUnop(bUnop));
-            asm.add("AD");
+            asm.add("SW");
+            asm.add(compileUnop(aUnop));
+            asm.add(compileOperator(binOp.op()));
             return asm;
 
         } else {
