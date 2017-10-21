@@ -136,11 +136,12 @@ public class Kata {
     }
 
     private Ast optimize(Ast ast) {
-        String op = ast.op();
-        if (isBinop(op)) {
+        if (isBinop(ast)) {
+
             BinOp binOp = (BinOp) ast;
             Ast a = binOp.a();
             Ast b = binOp.b();
+            String op = ast.op();
 
             if (isEligibleForContraction(a, b)) {
                 UnOp aUnop = (UnOp) a;
@@ -162,9 +163,9 @@ public class Kata {
                         break;
                 }
                 return new UnOp(IMMEDIATE, result);
-            } else if (isBinop(a.op()) && !isBinop(b.op())) {
+            } else if (isBinop(a) && !isBinop(b)) {
                 return new BinOp(op, optimize(a), b);
-            } else if (!isBinop(a.op()) && isBinop(b.op())) {
+            } else if (!isBinop(a) && isBinop(b)) {
                 return new BinOp(op, a, optimize(b));
             } else {
                 /**
@@ -196,7 +197,7 @@ public class Kata {
 
     private List<String> compileToAssembly(Ast ast) {
         if (isLeaf(ast)) {
-            if (isBinop(ast.op())) {
+            if (isBinop(ast)) {
                 BinOp binOp = ((BinOp) ast);
 
                 List<String> assembly = new ArrayList<>();
@@ -255,17 +256,21 @@ public class Kata {
     }
 
     private boolean isLeaf(Ast ast) {
-        if (!isBinop(ast.op())) {
+        if (!isBinop(ast)) {
             return true;
-        } else if (isBinop(ast.op())) {
+        } else if (isBinop(ast)) {
             BinOp binOp = ((BinOp) ast);
-            return !isBinop(binOp.a().op()) && !isBinop(binOp.b().op());
+            return !isBinop(binOp.a()) && !isBinop(binOp.b());
         }
         return false;
     }
 
     private boolean isBinop(String op) {
         return OPERATORS.contains(op);
+    }
+
+    private boolean isBinop(Ast ast) {
+        return isBinop(ast.op());
     }
 
     private boolean isArgument(String currentToken, Set<String> arguments) {
@@ -314,7 +319,7 @@ public class Kata {
     }
 
     public boolean isEligibleForContraction(Ast a, Ast b) {
-        if (!isBinop(a.op()) && !isBinop(b.op())) {
+        if (!isBinop(a) && !isBinop(b)) {
             UnOp aUnop = (UnOp) a;
             UnOp bUnop = (UnOp) b;
             if (aUnop.op().equals(IMMEDIATE) && bUnop.op().equals(IMMEDIATE)) {
