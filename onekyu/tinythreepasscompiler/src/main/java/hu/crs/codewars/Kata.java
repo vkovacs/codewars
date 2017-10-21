@@ -178,7 +178,7 @@ public class Kata {
                  *
                  *          became
                  *
-                 **             +
+                 *              +
                  *             / \
                  *            4   4
                  *
