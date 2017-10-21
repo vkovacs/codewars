@@ -72,7 +72,7 @@ public class Kata {
      * Returns assembly instructions
      */
     public List<String> pass3(Ast ast) {
-        return compileToAssembly(ast);
+        return compile(ast);
     }
 
     String toPrefixNotation(String infixExpression) {
@@ -195,7 +195,7 @@ public class Kata {
         return ast;
     }
 
-    private List<String> compileToAssembly(Ast ast) {
+    private List<String> compile(Ast ast) {
         if (isLeaf(ast)) {
             if (isBinop(ast)) {
                 BinOp binOp = ((BinOp) ast);
@@ -214,7 +214,7 @@ public class Kata {
                 UnOp unOp = (UnOp) ast;
                 int factor = unOp.n();
                 if (unOp.op().equals(IMMEDIATE)) {
-                    asm.add(ASM_INTERMEDIATE + unOp.n());
+                    asm.add(ASM_INTERMEDIATE + factor);
                 } else {
                     asm.add(ASM_ARGUMENT + factor);
                 }
@@ -224,10 +224,10 @@ public class Kata {
             BinOp binOp = (BinOp) ast;
             List<String> assembly = new ArrayList<>();
             //process branch a
-            assembly.addAll(compileToAssembly(binOp.a()));
+            assembly.addAll(compile(binOp.a()));
             assembly.add(ASM_PUSH);
             //process branch b
-            assembly.addAll(compileToAssembly(binOp.b()));
+            assembly.addAll(compile(binOp.b()));
             assembly.add(ASM_SWAP);
             //combine the result of the two branch
             assembly.add(ASM_POP);
@@ -237,11 +237,12 @@ public class Kata {
     }
 
     private String compileUnop(UnOp unOp) {
+        int factor = unOp.n();
         if (IMMEDIATE.equals(unOp.op())) {
-            return ASM_INTERMEDIATE + unOp.n();
+            return ASM_INTERMEDIATE + factor;
         }
 
-        return ASM_ARGUMENT + unOp.n();
+        return ASM_ARGUMENT + factor;
     }
 
     private String compileOperator(String operator) {
