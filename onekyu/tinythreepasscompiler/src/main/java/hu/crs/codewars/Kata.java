@@ -15,6 +15,15 @@ import java.util.stream.Collectors;
 public class Kata {
     public static final String IMMEDIATE = "imm";
     public static final String ARGUMENT = "arg";
+    public static final String ASM_INTERMEDIATE = "IM ";
+    public static final String ASM_ARGUMENT = "AR ";
+    public static final String ASM_PUSH = "PU";
+    public static final String ASM_SWITCH = "SW";
+    public static final String ASM_POP = "PO";
+    public static final String ASM_ADD = "AD";
+    public static final String ASM_SUBTRACT = "SU";
+    public static final String ASM_MULTIPLY = "MU";
+    public static final String ASM_DIVIDE = "DI";
 
     private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
     private static Set<String> OPERATORS = new HashSet<>();
@@ -65,22 +74,22 @@ public class Kata {
 
     private String compileUnop(UnOp unOp) {
         if (IMMEDIATE.equals(unOp.op())) {
-            return "IM " + unOp.n();
+            return ASM_INTERMEDIATE + unOp.n();
         }
 
-        return "AR " + unOp.n();
+        return ASM_ARGUMENT + unOp.n();
     }
 
     private String compileOperator(String operator) {
         switch (operator) {
             case "+":
-                return "AD";
+                return ASM_ADD;
             case "-":
-                return "SU";
+                return ASM_SUBTRACT;
             case "*":
-                return "MU";
+                return ASM_MULTIPLY;
             case "/":
-                return "DI";
+                return ASM_DIVIDE;
             default: throw new IllegalArgumentException();
         }
     }
@@ -101,36 +110,36 @@ public class Kata {
             if (isBinop(ast.op())) {
                 BinOp binOp = ((BinOp) ast);
 
-                List<String> asm = new ArrayList<>();
+                List<String> assembly = new ArrayList<>();
                 UnOp aUnop = (UnOp) binOp.a();
                 UnOp bUnop = (UnOp) binOp.b();
 
-                asm.add(compileUnop(bUnop));
-                asm.add("SW");
-                asm.add(compileUnop(aUnop));
-                asm.add(compileOperator(binOp.op()));
-                return asm;
+                assembly.add(compileUnop(bUnop));
+                assembly.add(ASM_SWITCH);
+                assembly.add(compileUnop(aUnop));
+                assembly.add(compileOperator(binOp.op()));
+                return assembly;
             } else {
                 ArrayList<String> asm = new ArrayList<>();
                 UnOp unOp = (UnOp) ast;
                 int factor = unOp.n();
                 if (unOp.op().equals(IMMEDIATE)) {
-                    asm.add("IM " + unOp.n());
+                    asm.add(ASM_INTERMEDIATE + unOp.n());
                 } else {
-                    asm.add("AR " + factor);
+                    asm.add(ASM_ARGUMENT + factor);
                 }
                 return asm;
             }
         } else {
             BinOp binOp = (BinOp) ast;
-            List<String> result = new ArrayList<>();
-            result.addAll(walk(binOp.a()));
-            result.add("PU");
-            result.addAll(walk(binOp.b()));
-            result.add("SW");
-            result.add("PO");
-            result.add(compileOperator(binOp.op()));
-            return result;
+            List<String> assembly = new ArrayList<>();
+            assembly.addAll(walk(binOp.a()));
+            assembly.add(ASM_PUSH);
+            assembly.addAll(walk(binOp.b()));
+            assembly.add(ASM_SWITCH);
+            assembly.add(ASM_POP);
+            assembly.add(compileOperator(binOp.op()));
+            return assembly;
         }
     }
 
