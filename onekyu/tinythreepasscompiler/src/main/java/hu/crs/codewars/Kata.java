@@ -18,7 +18,7 @@ public class Kata {
     private static final String ASM_INTERMEDIATE = "IM ";
     private static final String ASM_ARGUMENT = "AR ";
     private static final String ASM_PUSH = "PU";
-    private static final String ASM_SWITCH = "SW";
+    private static final String ASM_SWAP = "SW";
     private static final String ASM_POP = "PO";
     private static final String ASM_ADD = "AD";
     private static final String ASM_SUBTRACT = "SU";
@@ -205,7 +205,7 @@ public class Kata {
                 UnOp bUnop = (UnOp) binOp.b();
 
                 assembly.add(compileUnop(bUnop));
-                assembly.add(ASM_SWITCH);
+                assembly.add(ASM_SWAP);
                 assembly.add(compileUnop(aUnop));
                 assembly.add(compileOperator(binOp.op()));
                 return assembly;
@@ -226,7 +226,7 @@ public class Kata {
             assembly.addAll(compileToAssembly(binOp.a()));
             assembly.add(ASM_PUSH);
             assembly.addAll(compileToAssembly(binOp.b()));
-            assembly.add(ASM_SWITCH);
+            assembly.add(ASM_SWAP);
             assembly.add(ASM_POP);
             assembly.add(compileOperator(binOp.op()));
             return assembly;
