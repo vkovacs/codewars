@@ -185,11 +185,11 @@ public class Kata {
                  *       and need to be further optimized even for multiple levels.
                  *
                  */
-                BinOp oneLevelOptimizedBinop = new BinOp(op, optimize(a), optimize(b));
-                if (isEligibleForContraction(oneLevelOptimizedBinop.a(), oneLevelOptimizedBinop.b())) {
-                    return optimize(oneLevelOptimizedBinop);
+                BinOp optimizedBinop = new BinOp(op, optimize(a), optimize(b));
+                if (isEligibleForContraction(optimizedBinop.a(), optimizedBinop.b())) {
+                    return optimize(optimizedBinop);
                 }
-                return oneLevelOptimizedBinop;
+                return optimizedBinop;
             }
         }
         return ast;
