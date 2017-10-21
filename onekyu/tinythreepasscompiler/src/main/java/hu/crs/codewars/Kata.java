@@ -223,10 +223,13 @@ public class Kata {
         } else {
             BinOp binOp = (BinOp) ast;
             List<String> assembly = new ArrayList<>();
+            //process branch a
             assembly.addAll(compileToAssembly(binOp.a()));
             assembly.add(ASM_PUSH);
+            //process branch b
             assembly.addAll(compileToAssembly(binOp.b()));
             assembly.add(ASM_SWAP);
+            //combine the result of the two branch
             assembly.add(ASM_POP);
             assembly.add(compileOperator(binOp.op()));
             return assembly;
