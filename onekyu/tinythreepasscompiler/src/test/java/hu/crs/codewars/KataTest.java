@@ -230,4 +230,12 @@ public class KataTest {
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
         Assert.assertEquals(-1, Simulator.simulate(asm, 3));
     }
+
+    @Test
+    public void testBinaryOperatorComplexFunctionBodyExecuted() throws Exception {
+        String function = "[ x y ] ( x + y ) / 2";
+        Kata kata = new Kata();
+        List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
+        Assert.assertEquals(5, Simulator.simulate(asm, 6, 4));
+    }
 }

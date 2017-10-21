@@ -1,7 +1,6 @@
 package hu.crs.codewars;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,35 +72,65 @@ public class Kata {
     }
 
     private String compileOperator(String operator) {
-        if ("+".equals(operator)) {
-            return "AD";
-        } else if ("-".equals(operator)) {
-            return "SU";
+        switch (operator) {
+            case "+":
+                return "AD";
+            case "-":
+                return "SU";
+            case "*":
+                return "MU";
+            case "/":
+                return "DI";
+            default: throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException();
+    }
+
+
+    private boolean isLeaf(Ast ast) {
+        if (!isBinop(ast.op())) {
+            return true;
+        } else if (isBinop(ast.op())) {
+            BinOp binOp = ((BinOp) ast);
+            return !isBinop(binOp.a().op()) && !isBinop(binOp.b().op());
+        }
+        return false;
     }
 
     private List<String> walk(Ast ast) {
-        if (isBinop(ast.op())) {
-            BinOp binOp = ((BinOp) ast);
+        if (isLeaf(ast)) {
+            if (isBinop(ast.op())) {
+                BinOp binOp = ((BinOp) ast);
 
-            List<String> asm = new ArrayList<>();
-            UnOp aUnop = (UnOp) binOp.a();
-            UnOp bUnop = (UnOp) binOp.b();
+                List<String> asm = new ArrayList<>();
+                UnOp aUnop = (UnOp) binOp.a();
+                UnOp bUnop = (UnOp) binOp.b();
 
-            asm.add(compileUnop(bUnop));
-            asm.add("SW");
-            asm.add(compileUnop(aUnop));
-            asm.add(compileOperator(binOp.op()));
-            return asm;
-
-        } else {
-            UnOp unOp = (UnOp) ast;
-            int factor = unOp.n();
-            if (unOp.op().equals(IMMEDIATE)) {
-                return Arrays.asList("IM " + unOp.n());
+                asm.add(compileUnop(bUnop));
+                asm.add("SW");
+                asm.add(compileUnop(aUnop));
+                asm.add(compileOperator(binOp.op()));
+                return asm;
+            } else {
+                ArrayList<String> asm = new ArrayList<>();
+                UnOp unOp = (UnOp) ast;
+                int factor = unOp.n();
+                if (unOp.op().equals(IMMEDIATE)) {
+                    asm.add("IM " + unOp.n());
+                } else {
+                    asm.add("AR " + factor);
+                }
+                return asm;
             }
-            return Arrays.asList("AR " + factor);
+        } else {
+            BinOp binOp = (BinOp) ast;
+            List<String> result = new ArrayList<>();
+            result.addAll(walk(binOp.a()));
+            result.add("PU");
+            result.addAll(walk(binOp.b()));
+            result.add("SW");
+            result.add("PO");
+            result.add(compileOperator(binOp.op()));
+            return result;
         }
     }
 
