@@ -13,17 +13,17 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Kata {
-    public static final String IMMEDIATE = "imm";
-    public static final String ARGUMENT = "arg";
-    public static final String ASM_INTERMEDIATE = "IM ";
-    public static final String ASM_ARGUMENT = "AR ";
-    public static final String ASM_PUSH = "PU";
-    public static final String ASM_SWITCH = "SW";
-    public static final String ASM_POP = "PO";
-    public static final String ASM_ADD = "AD";
-    public static final String ASM_SUBTRACT = "SU";
-    public static final String ASM_MULTIPLY = "MU";
-    public static final String ASM_DIVIDE = "DI";
+    static final String IMMEDIATE = "imm";
+    static final String ARGUMENT = "arg";
+    private static final String ASM_INTERMEDIATE = "IM ";
+    private static final String ASM_ARGUMENT = "AR ";
+    private static final String ASM_PUSH = "PU";
+    private static final String ASM_SWITCH = "SW";
+    private static final String ASM_POP = "PO";
+    private static final String ASM_ADD = "AD";
+    private static final String ASM_SUBTRACT = "SU";
+    private static final String ASM_MULTIPLY = "MU";
+    private static final String ASM_DIVIDE = "DI";
 
     private static String FUNCTION_GROUPS_PATTERN = "(\\[[a-zA-Z ]*\\])(.*)";
     private static Set<String> OPERATORS = new HashSet<>();
@@ -35,6 +35,9 @@ public class Kata {
         OPERATORS.add("/");
     }
 
+    /**
+     * Used by codewars
+     */
     public List<String> compile(String prog) {
         return pass3(pass2(pass1(prog)));
     }
@@ -69,78 +72,46 @@ public class Kata {
      * Returns assembly instructions
      */
     public List<String> pass3(Ast ast) {
-        return walk(ast);
+        return compileToAssembly(ast);
     }
 
-    private String compileUnop(UnOp unOp) {
-        if (IMMEDIATE.equals(unOp.op())) {
-            return ASM_INTERMEDIATE + unOp.n();
-        }
+    String toPrefixNotation(String infixExpression) {
+        Deque<String> tokens = tokenize(infixExpression);
 
-        return ASM_ARGUMENT + unOp.n();
-    }
+        Deque<String> stack = new LinkedList<>();
+        Deque<String> prefixDeck = new LinkedList<>();
+        while (tokens.size() > 0) {
+            String currentToken = tokens.removeLast();
 
-    private String compileOperator(String operator) {
-        switch (operator) {
-            case "+":
-                return ASM_ADD;
-            case "-":
-                return ASM_SUBTRACT;
-            case "*":
-                return ASM_MULTIPLY;
-            case "/":
-                return ASM_DIVIDE;
-            default: throw new IllegalArgumentException();
-        }
-    }
+            if (!isOperand(currentToken) && !isParenthesis(currentToken)) {
+                prefixDeck.addFirst(currentToken);
 
-
-    private boolean isLeaf(Ast ast) {
-        if (!isBinop(ast.op())) {
-            return true;
-        } else if (isBinop(ast.op())) {
-            BinOp binOp = ((BinOp) ast);
-            return !isBinop(binOp.a().op()) && !isBinop(binOp.b().op());
-        }
-        return false;
-    }
-
-    private List<String> walk(Ast ast) {
-        if (isLeaf(ast)) {
-            if (isBinop(ast.op())) {
-                BinOp binOp = ((BinOp) ast);
-
-                List<String> assembly = new ArrayList<>();
-                UnOp aUnop = (UnOp) binOp.a();
-                UnOp bUnop = (UnOp) binOp.b();
-
-                assembly.add(compileUnop(bUnop));
-                assembly.add(ASM_SWITCH);
-                assembly.add(compileUnop(aUnop));
-                assembly.add(compileOperator(binOp.op()));
-                return assembly;
-            } else {
-                ArrayList<String> asm = new ArrayList<>();
-                UnOp unOp = (UnOp) ast;
-                int factor = unOp.n();
-                if (unOp.op().equals(IMMEDIATE)) {
-                    asm.add(ASM_INTERMEDIATE + unOp.n());
-                } else {
-                    asm.add(ASM_ARGUMENT + factor);
+            } else if (")".equals(currentToken)) {
+                stack.push(currentToken);
+            } else if ("(".equals(currentToken)) {
+                String top = stack.removeFirst();
+                while (!")".equals(top)) {
+                    prefixDeck.addFirst(top);
+                    top = stack.removeFirst();
                 }
-                return asm;
+            } else {
+                //current character is an operand
+                String top = stack.peekFirst();
+                while (!stack.isEmpty() && !")".equals(top) && firstHasHigherPrecedence(top, currentToken) > 0) {
+                    prefixDeck.addFirst(top);
+                    stack.removeFirst();
+                    top = stack.peekFirst();
+                }
+                stack.push(currentToken);
             }
-        } else {
-            BinOp binOp = (BinOp) ast;
-            List<String> assembly = new ArrayList<>();
-            assembly.addAll(walk(binOp.a()));
-            assembly.add(ASM_PUSH);
-            assembly.addAll(walk(binOp.b()));
-            assembly.add(ASM_SWITCH);
-            assembly.add(ASM_POP);
-            assembly.add(compileOperator(binOp.op()));
-            return assembly;
         }
+        //leftovers in stack
+        while (stack.size() > 0) {
+            String top = stack.removeFirst();
+            prefixDeck.addFirst(top);
+        }
+        return prefixDeck.stream()
+                .collect(Collectors.joining(" "));
     }
 
     private Ast buildAst(List<String> tokens, Map<String, Integer> functionArgumentsMap) {
@@ -162,55 +133,6 @@ public class Kata {
             }
         }
         return stack.removeFirst();
-    }
-
-    private boolean isBinop(String op) {
-        return OPERATORS.contains(op);
-    }
-
-    private boolean isArgument(String currentToken, Set<String> arguments) {
-        return arguments.contains(currentToken);
-    }
-
-    private boolean isNumber(String factor) {
-        Pattern pattern = Pattern.compile("[0-9]+");
-        Matcher matcher = pattern.matcher(factor);
-        return matcher.matches();
-    }
-
-    private Map<String, Integer> calculateFunctionArgumentsMap(String functionArguments) {
-        Map<String, Integer> functionArgumentsMap = new HashMap<>();
-        int order = 0;
-        for (String token : tokenize(functionArguments)) {
-            if (!token.equals("[") && !token.equals("]")) {
-                functionArgumentsMap.put(token, order);
-                order++;
-            }
-        }
-        return functionArgumentsMap;
-    }
-
-    private String extractFunctionArguments(String function) {
-        Pattern pattern = Pattern.compile(FUNCTION_GROUPS_PATTERN);
-        Matcher matcher = pattern.matcher(function);
-        if (matcher.matches()) {
-            if (!matcher.group(1).equals("")) {
-                return matcher.group(1);
-            }
-        }
-        throw new IllegalArgumentException();
-    }
-
-    private String extractFunctionBody(String function) {
-        Pattern pattern = Pattern.compile(FUNCTION_GROUPS_PATTERN);
-        Matcher matcher = pattern.matcher(function);
-        if (matcher.matches()) {
-            if (!matcher.group(2).equals("")) {
-                return matcher.group(2);
-            }
-            return null;
-        }
-        throw new IllegalArgumentException();
     }
 
     private Ast optimize(Ast ast) {
@@ -272,6 +194,125 @@ public class Kata {
         return ast;
     }
 
+    private List<String> compileToAssembly(Ast ast) {
+        if (isLeaf(ast)) {
+            if (isBinop(ast.op())) {
+                BinOp binOp = ((BinOp) ast);
+
+                List<String> assembly = new ArrayList<>();
+                UnOp aUnop = (UnOp) binOp.a();
+                UnOp bUnop = (UnOp) binOp.b();
+
+                assembly.add(compileUnop(bUnop));
+                assembly.add(ASM_SWITCH);
+                assembly.add(compileUnop(aUnop));
+                assembly.add(compileOperator(binOp.op()));
+                return assembly;
+            } else {
+                ArrayList<String> asm = new ArrayList<>();
+                UnOp unOp = (UnOp) ast;
+                int factor = unOp.n();
+                if (unOp.op().equals(IMMEDIATE)) {
+                    asm.add(ASM_INTERMEDIATE + unOp.n());
+                } else {
+                    asm.add(ASM_ARGUMENT + factor);
+                }
+                return asm;
+            }
+        } else {
+            BinOp binOp = (BinOp) ast;
+            List<String> assembly = new ArrayList<>();
+            assembly.addAll(compileToAssembly(binOp.a()));
+            assembly.add(ASM_PUSH);
+            assembly.addAll(compileToAssembly(binOp.b()));
+            assembly.add(ASM_SWITCH);
+            assembly.add(ASM_POP);
+            assembly.add(compileOperator(binOp.op()));
+            return assembly;
+        }
+    }
+
+    private String compileUnop(UnOp unOp) {
+        if (IMMEDIATE.equals(unOp.op())) {
+            return ASM_INTERMEDIATE + unOp.n();
+        }
+
+        return ASM_ARGUMENT + unOp.n();
+    }
+
+    private String compileOperator(String operator) {
+        switch (operator) {
+            case "+":
+                return ASM_ADD;
+            case "-":
+                return ASM_SUBTRACT;
+            case "*":
+                return ASM_MULTIPLY;
+            case "/":
+                return ASM_DIVIDE;
+            default: throw new IllegalArgumentException();
+        }
+    }
+
+    private boolean isLeaf(Ast ast) {
+        if (!isBinop(ast.op())) {
+            return true;
+        } else if (isBinop(ast.op())) {
+            BinOp binOp = ((BinOp) ast);
+            return !isBinop(binOp.a().op()) && !isBinop(binOp.b().op());
+        }
+        return false;
+    }
+
+    private boolean isBinop(String op) {
+        return OPERATORS.contains(op);
+    }
+
+    private boolean isArgument(String currentToken, Set<String> arguments) {
+        return arguments.contains(currentToken);
+    }
+
+    private boolean isNumber(String factor) {
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(factor);
+        return matcher.matches();
+    }
+
+    private Map<String, Integer> calculateFunctionArgumentsMap(String functionArguments) {
+        Map<String, Integer> functionArgumentsMap = new HashMap<>();
+        int order = 0;
+        for (String token : tokenize(functionArguments)) {
+            if (!token.equals("[") && !token.equals("]")) {
+                functionArgumentsMap.put(token, order);
+                order++;
+            }
+        }
+        return functionArgumentsMap;
+    }
+
+    private String extractFunctionArguments(String function) {
+        Pattern pattern = Pattern.compile(FUNCTION_GROUPS_PATTERN);
+        Matcher matcher = pattern.matcher(function);
+        if (matcher.matches()) {
+            if (!matcher.group(1).equals("")) {
+                return matcher.group(1);
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private String extractFunctionBody(String function) {
+        Pattern pattern = Pattern.compile(FUNCTION_GROUPS_PATTERN);
+        Matcher matcher = pattern.matcher(function);
+        if (matcher.matches()) {
+            if (!matcher.group(2).equals("")) {
+                return matcher.group(2);
+            }
+            return null;
+        }
+        throw new IllegalArgumentException();
+    }
+
     public boolean isEligibleForContraction(Ast a, Ast b) {
         if (!isBinop(a.op()) && !isBinop(b.op())) {
             UnOp aUnop = (UnOp) a;
@@ -291,45 +332,6 @@ public class Kata {
             tokens.add(m.group());
         }
         return tokens;
-    }
-
-    public String toPrefixNotation(String infixExpression) {
-        Deque<String> tokens = tokenize(infixExpression);
-
-        Deque<String> stack = new LinkedList<>();
-        Deque<String> prefixDeck = new LinkedList<>();
-        while (tokens.size() > 0) {
-            String currentToken = tokens.removeLast();
-
-            if (!isOperand(currentToken) && !isParenthesis(currentToken)) {
-                prefixDeck.addFirst(currentToken);
-
-            } else if (")".equals(currentToken)) {
-                stack.push(currentToken);
-            } else if ("(".equals(currentToken)) {
-                String top = stack.removeFirst();
-                while (!")".equals(top)) {
-                    prefixDeck.addFirst(top);
-                    top = stack.removeFirst();
-                }
-            } else {
-                //current character is an operand
-                String top = stack.peekFirst();
-                while (!stack.isEmpty() && !")".equals(top) && firstHasHigherPrecedence(top, currentToken) > 0) {
-                    prefixDeck.addFirst(top);
-                    stack.removeFirst();
-                    top = stack.peekFirst();
-                }
-                stack.push(currentToken);
-            }
-        }
-        //leftovers in stack
-        while (stack.size() > 0) {
-            String top = stack.removeFirst();
-            prefixDeck.addFirst(top);
-        }
-        return prefixDeck.stream()
-                .collect(Collectors.joining(" "));
     }
 
     private static boolean isParenthesis(String currentString) {
