@@ -4,7 +4,6 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.Stack;
 
 public class Kata {
     private Deque<Character> stack = new LinkedList<>();
