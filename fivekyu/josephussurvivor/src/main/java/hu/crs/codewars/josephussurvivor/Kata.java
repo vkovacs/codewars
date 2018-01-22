@@ -2,6 +2,7 @@ package hu.crs.codewars.josephussurvivor;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -71,6 +72,9 @@ public class Kata {
                 @Override
                 public E next() {
                     node = node.next;
+                    if (node == null) {
+                        throw new NoSuchElementException();
+                    }
                     return node.element;
                 }
 
