@@ -25,7 +25,7 @@ public class Kata {
             return -1;
         }
 
-        long minPossibleNumber = (long) Math.pow(10, s.length() - 1);
+        long minPossibleNumber = (long) Math.pow(10, s.length() - 1d);
         for (long i = n - 1; i > minPossibleNumber; i--) {
             Map<Character, Integer> iMap = createCharacterMap(String.valueOf(i));
             if (containsAllCharacters(iMap, nMap)) {
