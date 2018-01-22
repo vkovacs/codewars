@@ -1,6 +1,7 @@
 package hu.crs.codewars.reversepolishnotationcalculator;
 
-import java.util.Stack;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class Kata {
     public double evaluate(String expr) {
@@ -15,7 +16,7 @@ public class Kata {
     }
 
     private Double calculate(String[] parsedExpr) {
-        Stack<Double> stack = new Stack<Double>();
+        Deque<Double> stack = new LinkedList<>();
         for (String element : parsedExpr) {
             final char c = element.charAt(0);
             if (Character.isDigit(c)) {

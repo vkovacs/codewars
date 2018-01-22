@@ -48,14 +48,9 @@ public class Kata {
     }
 
     private boolean isPairOf(Character a, Character b) {
-        if (a == '(' && b == ')') {
-            return true;
-        } else if (a == '[' && b == ']') {
-            return true;
-        } else if (a == '{' && b == '}') {
-            return true;
-        }
+        return (a == '(' && b == ')') ||
+                (a == '[' && b == ']') ||
+                (a == '{' && b == '}');
 
-        return false;
     }
 }
