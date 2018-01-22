@@ -1,11 +1,13 @@
 package hu.crs.codewars.validbraces;
 
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 
 public class Kata {
-    private Stack<Character> stack = new Stack<>();
+    private Deque<Character> stack = new LinkedList<>();
 
     private Set<Character> openers = new HashSet<>();
     private Set<Character> closers = new HashSet<>();
