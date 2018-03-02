@@ -35,4 +35,5 @@ findProject(':fourkyu:stripcomments')?.name = 'stripcomments'
 include 'onekyu'
 include 'onekyu:tinythreepasscompiler'
 findProject(':onekyu:tinythreepasscompiler')?.name = 'tinythreepasscompiler'
+include 'APlusBEquals123'
 
