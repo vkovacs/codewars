@@ -1,27 +1,26 @@
 plugins {
     id "org.sonarqube" version "2.5"
 }
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: "jacoco"
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: "jacoco"
 
-    compileJava.options.encoding = 'UTF-8'
-    
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
 
-    repositories {
-        mavenLocal()
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
-        maven { url "http://repo.maven.apache.org/maven2" }
-    }
+repositories {
+    mavenLocal()
 
-    dependencies {
-        compile group: 'junit', name: 'junit', version: '4.12'
-        compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.9'
-    }
+    maven { url "http://repo.maven.apache.org/maven2" }
 }
+
+dependencies {
+    compile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.9'
+}
+
 
 sonarqube {
     properties {
