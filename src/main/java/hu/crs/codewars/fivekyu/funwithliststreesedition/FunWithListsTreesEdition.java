@@ -17,14 +17,10 @@ public class FunWithListsTreesEdition {
         }
 
         Set<Integer> integerSet = new TreeSet<>();
-        integerSet.addAll(flatten(head.getData(), integerSet));
-        while (head.getNext() != null) {
-            head = head.getNext();
-            integerSet.addAll(flatten(head.getData(), integerSet));
-        }
-
-        for (Integer integer : integerSet) {
-            System.out.println(integer);
+        integerSet.addAll(flatten(head.data, integerSet));
+        while (head.next != null) {
+            head = head.next;
+            integerSet.addAll(flatten(head.data, integerSet));
         }
         ArrayList<Integer> integerList = new ArrayList<>(integerSet);
 
@@ -32,14 +28,14 @@ public class FunWithListsTreesEdition {
     }
 
     private static Set<Integer> flatten(TreeNode treeNode, Set<Integer> integers) {
-        if (treeNode.getLeft() != null) {
-            integers.addAll(flatten(treeNode.getLeft(), integers));
+        if (treeNode.left != null) {
+            integers.addAll(flatten(treeNode.left, integers));
         }
-        if (treeNode.getRight() != null) {
-            integers.add(treeNode.getValue());
-            integers.addAll(flatten(treeNode.getRight(), integers));
+        if (treeNode.right != null) {
+            integers.add(treeNode.value);
+            integers.addAll(flatten(treeNode.right, integers));
         }
-        integers.add(treeNode.getValue());
+        integers.add(treeNode.value);
         return integers;
     }
 

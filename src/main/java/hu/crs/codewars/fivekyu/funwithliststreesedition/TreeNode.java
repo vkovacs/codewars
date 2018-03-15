@@ -3,9 +3,9 @@ package hu.crs.codewars.fivekyu.funwithliststreesedition;
 import java.util.Objects;
 
 public class TreeNode {
-    private int value;
-    private TreeNode left;
-    private TreeNode right;
+    public int value;
+    public TreeNode left;
+    public TreeNode right;
 
     public TreeNode(int value) {
         this.value = value;
@@ -15,18 +15,6 @@ public class TreeNode {
         this.value = value;
         this.left = left;
         this.right = right;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public TreeNode getLeft() {
-        return left;
-    }
-
-    public TreeNode getRight() {
-        return right;
     }
 
     @Override
