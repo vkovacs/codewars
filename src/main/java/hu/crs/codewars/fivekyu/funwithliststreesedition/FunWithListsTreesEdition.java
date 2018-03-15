@@ -12,19 +12,15 @@ import java.util.TreeSet;
  */
 public class FunWithListsTreesEdition {
     static TreeNode flatten(ListNode head) {
-        if (head == null) {
-            return null;
-        }
+        if (head == null) {return null;}
 
-        Set<Integer> integerSet = new TreeSet<>();
-        integerSet.addAll(flatten(head.data, integerSet));
+        Set<Integer> integers = new TreeSet<>(flatten(head.data, new TreeSet<>()));
         while (head.next != null) {
             head = head.next;
-            integerSet.addAll(flatten(head.data, integerSet));
+            integers.addAll(flatten(head.data, integers));
         }
-        ArrayList<Integer> integerList = new ArrayList<>(integerSet);
 
-        return build(integerList, 0);
+        return build(new ArrayList<>(integers), 0);
     }
 
     private static Set<Integer> flatten(TreeNode treeNode, Set<Integer> integers) {
