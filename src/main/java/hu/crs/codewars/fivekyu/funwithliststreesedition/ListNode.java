@@ -1,11 +1,12 @@
 package hu.crs.codewars.fivekyu.funwithliststreesedition;
 
 public class ListNode {
-    public TreeNode data;
-    public ListNode next;
+    public final TreeNode data;
+    public final ListNode next;
 
     public ListNode(TreeNode data) {
         this.data = data;
+        next = null;
     }
 
     public ListNode(TreeNode data, ListNode next) {

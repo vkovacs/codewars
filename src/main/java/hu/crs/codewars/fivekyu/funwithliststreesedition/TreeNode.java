@@ -3,12 +3,14 @@ package hu.crs.codewars.fivekyu.funwithliststreesedition;
 import java.util.Objects;
 
 public class TreeNode {
-    public int value;
-    public TreeNode left;
-    public TreeNode right;
+    public final int value;
+    public final TreeNode left;
+    public final TreeNode right;
 
     public TreeNode(int value) {
         this.value = value;
+        left = null;
+        right = null;
     }
 
     public TreeNode(int value, TreeNode left, TreeNode right) {
