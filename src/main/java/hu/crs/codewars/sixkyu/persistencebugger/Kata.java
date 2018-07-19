@@ -6,22 +6,21 @@ package hu.crs.codewars.sixkyu.persistencebugger;
  * https://www.codewars.com/kata/persistent-bugger
  */
 public class Kata {
-    public static int persistence(int i) {
+    public static int persistence(long n) {
         int step = 0;
-        while (i > 9) {
-            i = multiplyDigits(i);
+        while (n > 9) {
+            n = multiplyDigits(n);
             step++;
         }
         return step;
     }
 
-    private static int multiplyDigits(int i) {
+    private static long multiplyDigits(long n) {
         int product = 1;
-        while (i != 0) {
-            product *= i % 10;
-            i = i / 10;
+        while (n != 0) {
+            product *= n % 10;
+            n = n / 10;
         }
-
         return product;
     }
 }
