@@ -9,13 +9,9 @@ import java.util.Arrays;
  */
 public class Kata {
     public static int persistence(long n) {
-        long digitProduct = n;
-        if (digitProduct < 10) return 0;
-
-        digitProduct = multiplyDigits(digitProduct);
-        int step = 1;
-        while (digitProduct > 9) {
-            digitProduct = multiplyDigits(digitProduct);
+        int step = 0;
+        while (n > 9) {
+            n = multiplyDigits(n);
             step++;
         }
         return step;
