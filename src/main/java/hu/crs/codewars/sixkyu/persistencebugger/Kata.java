@@ -1,5 +1,7 @@
 package hu.crs.codewars.sixkyu.persistencebugger;
 
+import java.util.Arrays;
+
 /**
  * Persistent Bugger.
  *
@@ -7,20 +9,24 @@ package hu.crs.codewars.sixkyu.persistencebugger;
  */
 public class Kata {
     public static int persistence(long n) {
-        int step = 0;
-        while (n > 9) {
-            n = multiplyDigits(n);
+        long digitProduct = n;
+        if (digitProduct < 10) return 0;
+
+        digitProduct = multiplyDigits(digitProduct);
+        int step = 1;
+        while (digitProduct > 9) {
+            digitProduct = multiplyDigits(digitProduct);
             step++;
         }
         return step;
     }
 
-    private static long multiplyDigits(long n) {
-        int product = 1;
-        while (n != 0) {
-            product *= n % 10;
-            n = n / 10;
-        }
-        return product;
+    private static long multiplyDigits(long digitProduct) {
+        return Arrays.stream(String.valueOf(digitProduct).split(""))
+                .mapToLong(Long::valueOf)
+                .reduce((a1, b1) -> a1 * b1)
+                .orElseThrow(IllegalArgumentException::new);
     }
 }
+
+
