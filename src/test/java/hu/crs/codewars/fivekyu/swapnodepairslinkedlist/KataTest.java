@@ -10,9 +10,10 @@ public class KataTest {
     public void basicTests() {
         executeTest(null, Kata.swapPairs(null));
         executeTest(new Node("A"), new Node("A"));
-        executeTest(new ListBuilder().withValue("A").withValue("B").build(), new ListBuilder().withValue("B").withValue("A").build());
-        executeTest(new ListBuilder().withValue("A").withValue("B").withValue("C").build(), new ListBuilder().withValue("B").withValue("A").withValue("C").build());
+        executeTest(new ListBuilder().withValue("B").withValue("A").build(), new ListBuilder().withValue("A").withValue("B").build());
+        executeTest(new ListBuilder().withValue("B").withValue("A").withValue("C").build(), new ListBuilder().withValue("A").withValue("B").withValue("C").build());
         executeTest(new ListBuilder().withValue("B").withValue("A").withValue("D").withValue("C").build(), new ListBuilder().withValue("A").withValue("B").withValue("C").withValue("D").build());
+        executeTest(new ListBuilder().withValue("B").withValue("A").withValue("D").withValue("C").withValue("F").withValue("E").build(), new ListBuilder().withValue("A").withValue("B").withValue("C").withValue("D").withValue("E").withValue("F").build());
     }
 
     // use this to build your own tests
