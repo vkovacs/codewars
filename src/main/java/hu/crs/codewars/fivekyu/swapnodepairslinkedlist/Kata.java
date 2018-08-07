@@ -10,11 +10,8 @@ public class Kata {
             return head;
         }
 
-        Node first = head;
-        Node second = head.next;
-
-        Node newFirst = swap(first, second);
-        Node newHead = newFirst;
+        Node newHead = swap(head, head.next);
+        Node newFirst = newHead;
         Node newSecond = newFirst.next;
 
         while (hasNextPairNode(newFirst) && hasNextPairNode(newSecond)) {
@@ -29,13 +26,11 @@ public class Kata {
 
     private static boolean hasNextPairNode(Node node) {
         return node.next != null && node.next.next != null;
-
     }
 
-    private static Node swap(Node first, Node second) {
-        Node originalSecondNext = second.next;
-        second.next = first;
-        first.next = originalSecondNext;
-        return second;
+    private static Node swap(Node node0, Node node1) {
+        node0.next = node1.next;
+        node1.next = node0;
+        return node1;
     }
 }
