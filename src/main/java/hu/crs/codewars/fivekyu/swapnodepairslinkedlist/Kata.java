@@ -14,14 +14,17 @@ public class Kata {
         Node second = head.next;
 
         Node newFirst = swap(first, second);
+        Node newHead = newFirst;
         Node newSecond = newFirst.next;
 
-        if (hasNextPairNode(newFirst) && hasNextPairNode(newSecond)) {
+        while (hasNextPairNode(newFirst) && hasNextPairNode(newSecond)) {
             Node newNewFirst = swap(newFirst.next.next, newSecond.next.next);
             newSecond.next = newNewFirst;
+            newFirst = newNewFirst;
+            newSecond = newNewFirst.next;
         }
 
-        return newFirst;
+        return newHead;
     }
 
     private static boolean hasNextPairNode(Node node) {
