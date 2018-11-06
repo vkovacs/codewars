@@ -1,7 +1,7 @@
 package hu.crs.codewars.sixkyu.yourorderplease;
 
 import java.util.Arrays;
-import java.util.SortedMap;
+import java.util.Map;
 import java.util.StringJoiner;
 import java.util.TreeMap;
 
@@ -16,7 +16,7 @@ public class Kata {
             return "";
         }
 
-        final SortedMap<Integer, String> wordMap = fillWordMap(words.split(" "));
+        final Map<Integer, String> wordMap = fillWordMap(words.split(" "));
 
         StringJoiner stringJoiner = new StringJoiner(" ");
         wordMap.keySet().forEach(k -> stringJoiner.add(wordMap.get(k)));
@@ -24,8 +24,8 @@ public class Kata {
         return stringJoiner.toString();
     }
 
-    private static SortedMap<Integer, String> fillWordMap(String[] wordArray) {
-        SortedMap<Integer, String> wordMap = new TreeMap<>();
+    private static Map<Integer, String> fillWordMap(String[] wordArray) {
+        Map<Integer, String> wordMap = new TreeMap<>();
 
         Arrays.stream(wordArray).forEach( word -> {
                     final int number = findNumber(word);
