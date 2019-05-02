@@ -1,12 +1,5 @@
 language: java
 jdk:
 - openjdk11
-notifications:
-  email: false
-  slack:
-    rooms:
-      secure: vlZ2gySXLEpKJFvvg/Gss9voyQFy2PpID2e1S6cmgeE87qge756FP1AG0eaR+TEDVpe1rAx99OLT3Q08BxjzyJHUCVksxXmmqUuUYXi2mmP+IbEo89/vQ0l99ht03XfV2q6ZKHhd5uQCsj+U/vqj7NPM8PsN6rNyPLU1YfXOVQ1Mt5p8IzgQ1RbUXn7knaJeqbvj8Wxaa8KbDE4af8v58lT0d4UPuBaVccXaMuMNaQ9qXnezgGeK7bM2kfohPssrkp4zjFR5zJHgzgvioXY1ycI/F2hpJxoK+w5X4XX6FuGKl9sWJYAWevYvR7URbmzXn2aWY/TGcFr5iRnjr/EbWsoVr55iuw+diK3/qkEe/oL6gXUhLiEdGLTw+6gqF98iFIW5X3OHIKzfH6wF00hwGlnjhN7k7odjV07MMduPbURqRBPPUO03M5GTcrc4Os6y+cEH98Wkj8TQHPSLFwu9ly9xD1oZPnMp/hoM/4sxnIHW07zA3ZVsl3IbVeWfSbmwYU9RURgIaQVgTAehkGsQQXkvqkWTJVSAFOT3DuEoHcTLlJWTxAfpj5bXsJEnjjyBDYmxuVDp5cOFqN7KBUdwEy66lTfJVemMFMgGOYyuDDchGrB3kjkGozz/QbVF7L/Pw7Z6Zr/jbXHVvteL3zoC/B/XgCdpF4WWHXRIKsuSI44=
-    on_success: change
-    on_failure: always
 script:
   - ./gradlew sonarqube -Dsonar.login=${SONAR_TOKEN}
