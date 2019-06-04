@@ -40,4 +40,25 @@ public class KataTest {
         assertThat(b, notNullValue());
         assertThat(a, is(not(b)));
     }
+
+    @Test
+    public void mutateAll0s() {
+        final String chromosome = "0000000000";
+        String mutated = kata.mutate(chromosome, 0);
+        assertThat(mutated, is(chromosome));
+    }
+
+    @Test
+    public void mutateAll1s() {
+        final String chromosome = "1111111111";
+        String mutated = kata.mutate(chromosome, 1);
+        assertThat(mutated, is("0000000000"));
+    }
+
+    @Test
+    public void mutateMixed() {
+        final String chromosome = "1010101010";
+        String mutated = kata.mutate(chromosome, 1);
+        assertThat(mutated, is("0101010101"));
+    }
 }

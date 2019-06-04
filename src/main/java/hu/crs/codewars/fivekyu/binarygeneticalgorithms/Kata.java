@@ -19,7 +19,19 @@ public class Kata {
     }
 
     String mutate(String chromosome, double p) {
-        throw new UnsupportedOperationException();
+        return chromosome.chars()
+                .mapToObj(gene -> gene == '1' ? Boolean.TRUE : Boolean.FALSE)
+                .map(gene -> {
+                    double random = ThreadLocalRandom.current().nextDouble();
+                    if (random < p) {
+                        return !gene;
+                    } else {
+                        return gene;
+                    }
+                })
+                .map(bool -> bool ? 1 : 0)
+                .map(String::valueOf)
+                .collect(Collectors.joining());
     }
 
     String[] crossover(String chromosome1, String chromosome2) {
