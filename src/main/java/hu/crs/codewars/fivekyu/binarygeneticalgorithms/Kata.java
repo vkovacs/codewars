@@ -6,6 +6,11 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Binary Genetic Algorithms
+ *
+ * https://www.codewars.com/kata/binary-genetic-algorithms
+ */
 public class Kata {
 
     String generate(int length) {
