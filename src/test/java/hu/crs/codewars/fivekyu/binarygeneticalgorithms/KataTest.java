@@ -3,9 +3,13 @@ package hu.crs.codewars.fivekyu.binarygeneticalgorithms;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.junit.Assert.assertThat;
 
 public class KataTest {
@@ -60,5 +64,13 @@ public class KataTest {
         final String chromosome = "1010101010";
         String mutated = kata.mutate(chromosome, 1);
         assertThat(mutated, is("0101010101"));
+    }
+
+    @Test
+    public void select() {
+        String[] select = kata.select(List.of("00", "01", "10", "11"), List.of(1d, 1d, 1d, 1d));
+        assertThat(select, arrayWithSize(2));
+        assertThat(select[0], anyOf(is("00"), is("01"), is("10"), is("11")));
+        assertThat(select[1], anyOf(is("00"), is("01"), is("10"), is("11")));
     }
 }
