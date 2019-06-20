@@ -22,43 +22,12 @@ public class Kata {
     }
 
     String[] select(List<String> population, List<Double> fitnesses) {
-        List<ChromosomeProbability> sortedChromosomeProbabilities = chromosomeProbabilities(population, fitnesses);
+        List<ChromosomeProbability> sortedChromosomeProbabilities = orderedChromosomeProbabilities(population, fitnesses);
 
         String chromosome0 = selectChromosome(sortedChromosomeProbabilities);
         String chromosome1 = selectChromosome(sortedChromosomeProbabilities);
 
         return new String[]{chromosome0, chromosome1};
-    }
-
-    private String selectChromosome(List<ChromosomeProbability> sortedChromosomeProbabilities) {
-        double randomDouble = ThreadLocalRandom.current().nextDouble();
-
-        String selectedChromosome = sortedChromosomeProbabilities.get(0).chromosome;
-        Double previousProbability = 0d;
-        for (int i = 1; i < sortedChromosomeProbabilities.size(); i++) {
-            ChromosomeProbability chromosomeProbability = sortedChromosomeProbabilities.get(i);
-
-            if (previousProbability + chromosomeProbability.probability < randomDouble) {
-                previousProbability = previousProbability + chromosomeProbability.probability;
-                selectedChromosome = chromosomeProbability.chromosome;
-            } else {
-                return selectedChromosome;
-            }
-        }
-        return selectedChromosome;
-    }
-
-    private List<ChromosomeProbability> chromosomeProbabilities(List<String> population, List<Double> fitnesses) {
-        final Double sumOfFitnesses = fitnesses.stream().mapToDouble(Double::doubleValue).sum();
-
-        List<ChromosomeProbability> chromosomeProbabilities = new ArrayList<>();
-        for (int i = 0; i < population.size(); i++) {
-            Double probability = fitnesses.get(i) / sumOfFitnesses;
-            chromosomeProbabilities.add(new ChromosomeProbability(population.get(i), probability));
-        }
-
-        Collections.sort(chromosomeProbabilities);
-        return chromosomeProbabilities;
     }
 
     String mutate(String chromosome, double p) {
@@ -107,5 +76,40 @@ public class Kata {
             }
             return 0;
         }
+    }
+
+    private String selectChromosome(List<ChromosomeProbability> sortedChromosomeProbabilities) {
+        if (sortedChromosomeProbabilities.isEmpty()) {
+            throw new IllegalArgumentException("Chromosomes not present!");
+        }
+
+        String selectedChromosome = sortedChromosomeProbabilities.get(0).chromosome;
+        double randomDouble = ThreadLocalRandom.current().nextDouble();
+
+        Double previousProbability = 0d;
+        for (int i = 1; i < sortedChromosomeProbabilities.size(); i++) {
+            ChromosomeProbability chromosomeProbability = sortedChromosomeProbabilities.get(i);
+
+            if (previousProbability + chromosomeProbability.probability < randomDouble) {
+                previousProbability = previousProbability + chromosomeProbability.probability;
+                selectedChromosome = chromosomeProbability.chromosome;
+            } else {
+                return selectedChromosome;
+            }
+        }
+        return selectedChromosome;
+    }
+
+    private List<ChromosomeProbability> orderedChromosomeProbabilities(List<String> population, List<Double> fitnesses) {
+        final Double sumOfFitnesses = fitnesses.stream().mapToDouble(Double::doubleValue).sum();
+
+        List<ChromosomeProbability> chromosomeProbabilities = new ArrayList<>();
+        for (int i = 0; i < population.size(); i++) {
+            Double probability = fitnesses.get(i) / sumOfFitnesses;
+            chromosomeProbabilities.add(new ChromosomeProbability(population.get(i), probability));
+        }
+
+        Collections.sort(chromosomeProbabilities);
+        return chromosomeProbabilities;
     }
 }
