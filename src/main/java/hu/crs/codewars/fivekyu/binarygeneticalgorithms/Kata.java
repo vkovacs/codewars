@@ -47,7 +47,18 @@ public class Kata {
     }
 
     String[] crossover(String chromosome1, String chromosome2) {
-        throw new UnsupportedOperationException();
+        if (chromosome1.length() != chromosome2.length())
+            throw new IllegalArgumentException("Chromosomes must have the same size!");
+        int splitPosition = ThreadLocalRandom.current().nextInt(chromosome1.length() - 1);
+
+        return crossoverSplit(chromosome1, chromosome2, splitPosition);
+    }
+
+    String[] crossoverSplit(String chromosome1, String chromosome2, int splitPosition) {
+        String crossoverChromosome1 = chromosome1.substring(0, splitPosition) + chromosome2.substring(splitPosition);
+        String crossoverChromosome2 = chromosome2.substring(0, splitPosition) + chromosome1.substring(splitPosition);
+
+        return new String[]{crossoverChromosome1, crossoverChromosome2};
     }
 
     public String run(ToDoubleFunction<String> fitness, int length, double p_c, double p_m) {

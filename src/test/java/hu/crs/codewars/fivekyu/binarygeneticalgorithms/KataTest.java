@@ -1,14 +1,18 @@
 package hu.crs.codewars.fivekyu.binarygeneticalgorithms;
 
+import org.hamcrest.collection.IsArrayContaining;
+import org.hamcrest.collection.IsArrayContainingInOrder;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
 import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.junit.Assert.assertThat;
 
@@ -72,5 +76,13 @@ public class KataTest {
         assertThat(select, arrayWithSize(2));
         assertThat(select[0], anyOf(is("00"), is("01"), is("10"), is("11")));
         assertThat(select[1], anyOf(is("00"), is("01"), is("10"), is("11")));
+    }
+
+    @Test
+    public void crossoverSplit() {
+        String chromosome1 = "0000";
+        String chromosome2 = "1111";
+        String[] crossovers = kata.crossoverSplit(chromosome1, chromosome2, 2);
+        assertThat(crossovers, arrayContaining("0011", "1100"));
     }
 }
