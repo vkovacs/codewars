@@ -62,11 +62,33 @@ public class Kata {
     }
 
     public String run(ToDoubleFunction<String> fitness, int length, double p_c, double p_m) {
-        throw new UnsupportedOperationException();
+        return run(fitness, length, p_c, p_m, 100);
     }
 
     public String run(ToDoubleFunction<String> fitness, int length, double p_c, double p_m, int iterations) {
-        throw new UnsupportedOperationException();
+        int POPULATION_SIZE = 100;
+        List<String> population = Stream.generate(() -> generate(length))
+                .limit(POPULATION_SIZE)
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < iterations; i++) {
+            List<String> nextPopulation = new ArrayList<>();
+            for (int j = 0; i < 100; i++) {
+                String[] selectedChromosomes = select(population, population.stream().map(fitness::applyAsDouble).collect(Collectors.toList()));
+                if (ThreadLocalRandom.current().nextDouble() < p_c) {
+                    String[] crossover = crossover(selectedChromosomes[0], selectedChromosomes[1]);
+                    String descendant0 = mutate(crossover[0], ThreadLocalRandom.current().nextDouble());
+                    String descendant1 = mutate(crossover[1], ThreadLocalRandom.current().nextDouble());
+                    nextPopulation.add(descendant0);
+                    nextPopulation.add(descendant1);
+                }
+            }
+            population = new ArrayList<>(nextPopulation);
+            nextPopulation.clear();
+        }
+
+        return population.stream().reduce((x, y) -> fitness.applyAsDouble(x) > fitness.applyAsDouble(y) ? x : y).orElseThrow();
+
     }
 
     private static class ChromosomeProbability implements Comparable<ChromosomeProbability> {
