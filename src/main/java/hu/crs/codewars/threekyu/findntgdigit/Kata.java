@@ -11,7 +11,7 @@ public class Kata {
             throw new IllegalArgumentException();
         }
 
-        throw  new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public static int nthDigitOfFirstLine(final int n) {
@@ -26,6 +26,24 @@ public class Kata {
                 return Character.getNumericValue(currentNumberString.charAt(n - currentIndex));
             }
             currentNumber++;
+        }
+        throw new IllegalStateException();
+    }
+
+    public static int nthDigitOfSecondLine(final int n) {
+        int currentNumberOfSecondLine = 1;
+        int currentNumberIndexInFirstLine = 0;
+        int currentIndexInSecondLine = 0;
+
+        while (currentIndexInSecondLine <= n) {
+            String currentNumberString = String.valueOf(currentNumberOfSecondLine);
+            if (currentIndexInSecondLine + currentNumberString.length() <= n) {
+                currentIndexInSecondLine += currentNumberString.length();
+            } else {
+                return Character.getNumericValue(currentNumberString.charAt(n - currentIndexInSecondLine));
+            }
+            int nthDigitOfFirstLine = nthDigitOfFirstLine(++currentNumberIndexInFirstLine);
+            currentNumberOfSecondLine = nthDigitOfFirstLine * nthDigitOfFirstLine;
         }
         throw new IllegalStateException();
     }

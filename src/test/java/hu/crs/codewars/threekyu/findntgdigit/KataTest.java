@@ -45,4 +45,24 @@ public class KataTest {
     public void find10thDigitInFirstLine() {
         assertThat(Kata.nthDigitOfFirstLine(10), is(0));
     }
+
+    @Test
+    public void find0thDigitISecondLine() {
+        assertThat(Kata.nthDigitOfSecondLine(0), is(1));
+    }
+
+    @Test
+    public void find1stDigitISecondLine() {
+        assertThat(Kata.nthDigitOfSecondLine(1), is(4));
+    }
+
+    @Test
+    public void find3rdDigitISecondLine() {
+        assertThat(Kata.nthDigitOfSecondLine(3), is(1));
+    }
+
+    @Test
+    public void find4thDigitISecondLine() {
+        assertThat(Kata.nthDigitOfSecondLine(4), is(6));
+    }
 }
