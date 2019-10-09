@@ -1,5 +1,6 @@
 package hu.crs.codewars.threekyu.findntgdigit;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static hu.crs.codewars.threekyu.findntgdigit.Kata.findDigit;
@@ -9,6 +10,7 @@ import static org.junit.Assert.assertThat;
 
 public class KataTest {
     @Test
+    @Ignore
     public void basicTest() {
         for (int i = 0; i < 30; i++) {// Testing for 0 to 29 digits
             System.out.println(i);

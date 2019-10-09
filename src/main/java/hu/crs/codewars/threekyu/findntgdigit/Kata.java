@@ -50,9 +50,9 @@ public class Kata {
 
     public static int nthDigitOfSecondLine(final int n) {
         int currentNumberOfSecondLine = 1;
-        int currentNumberIndexInFirstLine = 0;
         int currentIndexInSecondLine = 0;
 
+        int i = 1;
         while (currentIndexInSecondLine <= n) {
             String currentNumberString = String.valueOf(currentNumberOfSecondLine);
             if (currentIndexInSecondLine + currentNumberString.length() <= n) {
@@ -60,8 +60,9 @@ public class Kata {
             } else {
                 return Character.getNumericValue(currentNumberString.charAt(n - currentIndexInSecondLine));
             }
-            int nthDigitOfFirstLine = nthDigitOfFirstLine(++currentNumberIndexInFirstLine);
-            currentNumberOfSecondLine = nthDigitOfFirstLine * nthDigitOfFirstLine;
+
+            i++;
+            currentNumberOfSecondLine = i * i;
         }
         throw new IllegalStateException();
     }
