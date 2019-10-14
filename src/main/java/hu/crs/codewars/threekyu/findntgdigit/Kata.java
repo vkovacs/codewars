@@ -1,40 +1,43 @@
 package hu.crs.codewars.threekyu.findntgdigit;
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+
+import static java.lang.Character.getNumericValue;
+
 /**
  * Find nth Digit In a Infinite Addition Result
  * <p>
  * https://www.codewars.com/kata/59f6e1af3640ce12510000ad/train/java
  */
 public class Kata {
-    private static String firstLine;
-    private static String secondLine;
+    private static StringBuilder firstLine;
+    private static StringBuilder secondLine;
 
     private static void generateLines(int minPosition) {
-        StringBuilder sb1 = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
+        firstLine = new StringBuilder();
+        secondLine = new StringBuilder();
 
         int number1 = 1;
         int number2 = number1 * number1;
 
-        while (sb1.length() <= minPosition + 1 || sb2.length() <= minPosition + 1) {
-            sb1.append(number1);
-            sb2.append(number2);
+        while (firstLine.length() <= minPosition + 1 || secondLine.length() <= minPosition + 1) {
+            firstLine.append(number1);
+            secondLine.append(number2);
             number1++;
             number2 = number1 * number1;
         }
 
         int i = minPosition;
-        while (Character.getNumericValue(sb1.charAt(i + 1)) + Character.getNumericValue(sb2.charAt(i + 1)) > 8) {
-            sb1.append(number1);
-            sb2.append(number2);
+        while (getNumericValue(firstLine.charAt(i + 1)) + getNumericValue(secondLine.charAt(i + 1)) > 8) {
+            firstLine.append(number1);
+            secondLine.append(number2);
             number1++;
             number2 = number1 * number1;
             i++;
         }
-        firstLine = sb1.toString();
-        secondLine = sb2.toString();
     }
-
 
     public static int findDigit(int n) {
         if (n < 0) {
@@ -49,26 +52,26 @@ public class Kata {
         }
 
         int carry = 0;
-        StringBuilder sum = new StringBuilder();
+        LinkedList<Integer> sumStack = new LinkedList<>();
         while (currentPrecision >= 0) {
             int total = nthDigitOfFirstLine(currentPrecision) + nthDigitOfSecondLine(currentPrecision) + carry;
             int sumOnIndexResult = total % 10;
             carry = total / 10;
-            sum.insert(0, sumOnIndexResult);
+            sumStack.addFirst(sumOnIndexResult);
             currentPrecision--;
         }
         if (carry > 0) {
-            sum.insert(0, carry);
+            sumStack.addFirst(carry);
         }
 
-        return Character.getNumericValue(sum.charAt(n));
-    }
-
-    private static int nthDigitOfSecondLine(int i) {
-        return Character.getNumericValue(secondLine.charAt(i));
+        return sumStack.get(n);
     }
 
     private static int nthDigitOfFirstLine(int i) {
-        return Character.getNumericValue(firstLine.charAt(i));
+        return getNumericValue(firstLine.charAt(i));
+    }
+
+    private static int nthDigitOfSecondLine(int i) {
+        return getNumericValue(secondLine.charAt(i));
     }
 }
