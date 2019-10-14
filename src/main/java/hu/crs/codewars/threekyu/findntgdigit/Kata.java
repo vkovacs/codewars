@@ -19,8 +19,8 @@ public class Kata {
         firstLine = new StringBuilder();
         secondLine = new StringBuilder();
 
-        int number1 = 1;
-        int number2 = number1 * number1;
+        long number1 = 1;
+        long number2 = number1 * number1;
 
         while (firstLine.length() <= minPosition + 1 || secondLine.length() <= minPosition + 1) {
             firstLine.append(number1);
@@ -52,19 +52,19 @@ public class Kata {
         }
 
         int carry = 0;
-        LinkedList<Integer> sumStack = new LinkedList<>();
-        while (currentPrecision >= 0) {
+        Deque<Integer> sumStack = new LinkedList<>();
+        while (currentPrecision >= n) {
             int total = nthDigitOfFirstLine(currentPrecision) + nthDigitOfSecondLine(currentPrecision) + carry;
             int sumOnIndexResult = total % 10;
             carry = total / 10;
             sumStack.addFirst(sumOnIndexResult);
             currentPrecision--;
         }
-        if (carry > 0) {
-            sumStack.addFirst(carry);
-        }
+//        if (carry > 0) {
+//            sumStack.addFirst(carry);
+//        }
 
-        return sumStack.get(n);
+        return sumStack.getFirst();
     }
 
     private static int nthDigitOfFirstLine(int i) {

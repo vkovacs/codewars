@@ -16,8 +16,8 @@ public class KataTest {
         assertEquals(4, findDigit(10000));
         assertEquals(4, findDigit(100000));
         assertEquals(5, findDigit(1000000));
-//        assertEquals(3, findDigit(10000000));
-//        assertEquals(9, findDigit(100000000));
-//        assertEquals(1, findDigit(1000000000));
+        assertEquals(3, findDigit(10000000));
+        assertEquals(9, findDigit(100000000));
+        assertEquals(1, findDigit(1000000000));
     }
 }
