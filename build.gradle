@@ -4,7 +4,6 @@ plugins {
 }
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: "jacoco"
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -29,13 +28,4 @@ repositories {
 
 dependencies {
     compile group: 'junit', name: 'junit', version: '4.12'
-}
-
-
-sonarqube {
-    properties {
-        property "sonar.projectName", "Codewars"
-        property "sonar.projectKey", "hu.crs:codewars"
-
-    }
 }
