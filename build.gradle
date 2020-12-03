@@ -1,5 +1,6 @@
 plugins {
     id "org.sonarqube" version "2.7"
+    id 'org.jetbrains.kotlin.jvm' version '1.4.20'
 }
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -9,6 +10,17 @@ compileJava.options.encoding = 'UTF-8'
 
 sourceCompatibility = 15
 targetCompatibility = 15
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "15"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "15"
+    }
+}
 
 repositories {
     mavenLocal()
