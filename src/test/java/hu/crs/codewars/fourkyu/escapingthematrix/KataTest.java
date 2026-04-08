@@ -1,11 +1,13 @@
 package hu.crs.codewars.fourkyu.escapingthematrix;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class KataTest {
 
-    @Test(expected = Neo.class)
+    @Test
     public void test() {
-        Kata.enter();
+        Assertions.assertThrows(Neo.class, Kata::enter);
     }
 }

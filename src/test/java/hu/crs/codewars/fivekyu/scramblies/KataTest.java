@@ -1,8 +1,9 @@
 package hu.crs.codewars.fivekyu.scramblies;
 
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KataTest {
     private static void testing(boolean actual, boolean expected) {

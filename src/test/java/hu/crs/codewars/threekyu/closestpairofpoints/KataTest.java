@@ -1,11 +1,15 @@
 package hu.crs.codewars.threekyu.closestpairofpoints;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KataTest {
 
@@ -219,14 +223,14 @@ public class KataTest {
     private void verify(List<Point> expected, List<Point> actual) {
         Comparator<Point> comparer = Comparator.comparingDouble(p -> p.x);
 
-        Assert.assertNotNull("Returned array cannot be null.", actual);
-        Assert.assertEquals("Expected exactly two points.", 2, actual.size());
-        Assert.assertFalse("Returned points must not be null.", actual.get(0) == null || actual.get(1) == null);
+        assertNotNull(actual);
+        Assertions.assertEquals(2, actual.size());
+        Assertions.assertFalse(actual.get(0) == null || actual.get(1) == null);
 
         expected.sort(comparer);
         actual.sort(comparer);
         boolean eq = expected.get(0).x == actual.get(0).x && expected.get(0).y == actual.get(0).y
                 && expected.get(1).x == actual.get(1).x && expected.get(1).y == actual.get(1).y;
-        Assert.assertTrue(String.format("Expected: %s, Actual: %s", expected.toString(), actual.toString()), eq);
+        assertTrue(eq);
     }
 }

@@ -1,9 +1,10 @@
 package hu.crs.codewars.sixkyu.aplusbequals123;
 
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KataTest {
 
@@ -12,8 +13,8 @@ public class KataTest {
         int result = (int) (a + b);
         System.out.println("Result: " + result);
         System.out.println("" + a + " + " + b + " = " + result);
-        assertTrue("B must be >= 0", b >= 0);
-        assertEquals("A + B must give 123", 123, result);
+        assertTrue(b >= 0);
+        assertEquals(123, result);
     }
 
     @Test

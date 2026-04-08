@@ -1,9 +1,10 @@
 package hu.crs.codewars.fivekyu.swapnodepairslinkedlist;
 
-import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class KataTest {
     @Test
@@ -45,7 +46,6 @@ public class KataTest {
 
         final String expected = expectedResult.printList();
         final String actual = output.printList();
-        final String errMsg = "Expected '" + expected;
-        assertEquals(errMsg, expected, actual);
+        assertEquals(expected, actual);
     }
 }

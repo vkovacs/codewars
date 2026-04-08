@@ -1,8 +1,9 @@
 package hu.crs.codewars.fourkyu.nextbiggernumberwithsamedigits;
 
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KataTest {
     @Test

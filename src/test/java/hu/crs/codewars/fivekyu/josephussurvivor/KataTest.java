@@ -1,8 +1,9 @@
 package hu.crs.codewars.fivekyu.josephussurvivor;
 
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Josephus Survivor
@@ -47,7 +48,6 @@ public class KataTest {
     }
 
     private void josephusTest(final int n, final int k, final int result) {
-        String testDescription = String.format("Testing where n = %d and k = %d", n, k);
-        assertEquals(testDescription, result, Kata.josephusSurvivor(n, k));
+        assertEquals(result, Kata.josephusSurvivor(n, k));
     }
 }

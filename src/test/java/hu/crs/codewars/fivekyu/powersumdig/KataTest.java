@@ -1,11 +1,13 @@
 package hu.crs.codewars.fivekyu.powersumdig;
 
-import static org.junit.Assert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.IntStream;
-import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KataTest {
 	private static void testing(long act, long exp) {

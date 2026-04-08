@@ -1,8 +1,8 @@
 package hu.crs.codewars.sixkyu.autocorrect;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KataTest {
     @Test
@@ -34,7 +34,7 @@ public class KataTest {
         };
 
         for (int i = 0; i < inputs.length; i++) {
-            assertEquals(String.format("Wrong result for \"%s\":", inputs[i]), outputs[i], Kata.autocorrect(inputs[i]));
+            assertEquals(outputs[i], Kata.autocorrect(inputs[i]));
         }
     }
 }

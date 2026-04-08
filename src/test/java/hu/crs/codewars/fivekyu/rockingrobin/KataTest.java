@@ -1,17 +1,16 @@
 package hu.crs.codewars.fivekyu.rockingrobin;
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class KataTest {
     @Test
@@ -33,7 +32,7 @@ public class KataTest {
             }
         }
 
-        assertEquals("should have iterated over all elements:", 0, progression.size());
+        assertEquals(0, progression.size());
 
     }
 }

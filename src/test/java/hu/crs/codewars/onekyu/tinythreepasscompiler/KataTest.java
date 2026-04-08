@@ -1,12 +1,13 @@
 package hu.crs.codewars.onekyu.tinythreepasscompiler;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class KataTest {
 
@@ -18,224 +19,228 @@ public class KataTest {
         // {'op':'/','a':{'op':'-','a':{'op':'+','a':{'op':'*','a':{'op':'*','a':{'op':'imm','n':2},'b':{'op':'imm','n':3}},'b':{'op':'arg','n':0}},'b':{'op':'*','a':{'op':'imm','n':5},'b':{'op':'arg','n':1}}},'b':{'op':'*','a':{'op':'imm','n':3},'b':{'op':'arg','n':2}}},'b':{'op':'+','a':{'op':'+','a':{'op':'imm','n':1},'b':{'op':'imm','n':3}},'b':{'op':'*','a':{'op':'imm','n':2},'b':{'op':'imm','n':2}}}}
         Ast t1 = new BinOp("/", new BinOp("-", new BinOp("+", new BinOp("*", new BinOp("*", new UnOp("imm", 2), new UnOp("imm", 3)), new UnOp("arg", 0)), new BinOp("*", new UnOp("imm", 5), new UnOp("arg", 1))), new BinOp("*", new UnOp("imm", 3), new UnOp("arg", 2))), new BinOp("+", new BinOp("+", new UnOp("imm", 1), new UnOp("imm", 3)), new BinOp("*", new UnOp("imm", 2), new UnOp("imm", 2))));
         Ast p1 = compiler.pass1(program);
-        Assert.assertEquals("Pass 1", t1, p1);
+        assertEquals(t1, p1);
 
         // {'op':'/','a':{'op':'-','a':{'op':'+','a':{'op':'*','a':{'op':'imm','n':6},'b':{'op':'arg','n':0}},'b':{'op':'*','a':{'op':'imm','n':5},'b':{'op':'arg','n':1}}},'b':{'op':'*','a':{'op':'imm','n':3},'b':{'op':'arg','n':2}}},'b':{'op':'imm','n':8}}
         Ast t2 = new BinOp("/", new BinOp("-", new BinOp("+", new BinOp("*", new UnOp("imm", 6), new UnOp("arg", 0)), new BinOp("*", new UnOp("imm", 5), new UnOp("arg", 1))), new BinOp("*", new UnOp("imm", 3), new UnOp("arg", 2))), new UnOp("imm", 8));
         Ast p2 = compiler.pass2(p1);
-        Assert.assertEquals("Pass 2", t2, p2);
+        assertEquals(t2, p2);
 
         List<String> p3 = compiler.pass3(p2);
-        Assert.assertEquals("program(4,0,0) == 3", 3, Simulator.simulate(p3, 4, 0, 0));
-        Assert.assertEquals("program(4,8,0) == 8", 8, Simulator.simulate(p3, 4, 8, 0));
-        Assert.assertEquals("program(4,8,16) == 2", 2, Simulator.simulate(p3, 4, 8, 16));
+        assertEquals(3, Simulator.simulate(p3, 4, 0, 0));
+        assertEquals(8, Simulator.simulate(p3, 4, 8, 0));
+        assertEquals(2, Simulator.simulate(p3, 4, 8, 16));
     }
 
     @Test
     public void testInfixToPrefixJustEqualPrecedence() {
-        Assert.assertEquals("- + A B C", new Kata().toPrefixNotation("A + B - C"));
+        assertEquals("- + A B C", new Kata().toPrefixNotation("A + B - C"));
     }
 
     @Test
     public void testInfixToPrefixHasHigherPrecedence() {
-        Assert.assertEquals("+ A / B 2", new Kata().toPrefixNotation("A + B / 2"));
+        assertEquals("+ A / B 2", new Kata().toPrefixNotation("A + B / 2"));
 
     }
 
     @Test
     public void testInfixToPrefixHasHigherPrecedenceAndMultipleLower() {
-        Assert.assertEquals("- + A / B 2 3", new Kata().toPrefixNotation("A + B / 2 - 3"));
+        assertEquals("- + A / B 2 3", new Kata().toPrefixNotation("A + B / 2 - 3"));
     }
 
     @Test
     public void testInfixToPrefixHasMultipleHigherPrecedence() {
-        Assert.assertEquals("- / * A B 2 3", new Kata().toPrefixNotation("A * B / 2 - 3"));
+        assertEquals("- / * A B 2 3", new Kata().toPrefixNotation("A * B / 2 - 3"));
     }
 
     @Test
     public void testInfixToPrefixHandleParenthesis() {
-        Assert.assertEquals("+ A / B - 2 3", new Kata().toPrefixNotation("A + B / ( 2 - 3)"));
+        assertEquals("+ A / B - 2 3", new Kata().toPrefixNotation("A + B / ( 2 - 3)"));
     }
 
     @Test
     public void testInfixToPrefixNestedParenthesises() {
-        Assert.assertEquals("- * / 15 - 7 + 1 1 3 + 2 + 1 1", new Kata().toPrefixNotation("((15 / (7 - (1 + 1))) * 3) - (2 + (1 + 1))"));
+        assertEquals("- * / 15 - 7 + 1 1 3 + 2 + 1 1", new Kata().toPrefixNotation("((15 / (7 - (1 + 1))) * 3) - (2 + (1 + 1))"));
     }
 
     @Test
     public void testPass1EmptyInput() {
-        Assert.assertEquals(null, new Kata().pass1("[]"));
+        assertNull(new Kata().pass1("[]"));
     }
 
     @Test
-    public void testUnaryOperatorWithOneImmutableValue() throws Exception {
+    public void testUnaryOperatorWithOneImmutableValue() {
         UnOp expectedAst = new UnOp(Kata.IMMEDIATE, 1);
-        Assert.assertEquals(expectedAst, new Kata().pass1("[] 1"));
+        assertEquals(expectedAst, new Kata().pass1("[] 1"));
     }
 
     @Test
-    public void testUnaryOperatorWithOneArgumentReturnsConstant() throws Exception {
+    public void testUnaryOperatorWithOneArgumentReturnsConstant() {
         UnOp expectedAst = new UnOp(Kata.IMMEDIATE, 1);
-        Assert.assertEquals(expectedAst, new Kata().pass1("[x] 1"));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testUnaryOperatorWithIncorrectSyntax() throws Exception {
-        UnOp expectedAst = new UnOp(Kata.IMMEDIATE, 0);
-        new Kata().pass1("0");
+        assertEquals(expectedAst, new Kata().pass1("[x] 1"));
     }
 
     @Test
-    public void testUnaryOperatorWithOneArgumentReturnsSameArgument() throws Exception {
+    public void testUnaryOperatorWithIncorrectSyntax() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            UnOp expectedAst = new UnOp(Kata.IMMEDIATE, 0);
+            new Kata().pass1("0");
+        });
+    }
+
+    @Test
+    public void testUnaryOperatorWithOneArgumentReturnsSameArgument() {
         UnOp expectedAst = new UnOp(Kata.ARGUMENT, 0);
-        Assert.assertEquals(expectedAst, new Kata().pass1("[x] x"));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testUnaryOperatorWithOneIllegalArgument() throws Exception {
-        new Kata().pass1("[x] y");
+        assertEquals(expectedAst, new Kata().pass1("[x] x"));
     }
 
     @Test
-    public void testBinaryOperatorReturnsConstant() throws Exception {
+    public void testUnaryOperatorWithOneIllegalArgument() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Kata().pass1("[x] y"));
+    }
+
+    @Test
+    public void testBinaryOperatorReturnsConstant() {
         UnOp expectedA = new UnOp(Kata.IMMEDIATE, 1);
         UnOp expectedB = new UnOp(Kata.IMMEDIATE, 2);
         BinOp expectedAst = new BinOp("+", expectedA, expectedB);
-        Assert.assertEquals(expectedAst, new Kata().pass1("[x y] 1 + 2"));
+        assertEquals(expectedAst, new Kata().pass1("[x y] 1 + 2"));
     }
 
     @Test
-    public void testBinaryOperatorReturnsArguments() throws Exception {
+    public void testBinaryOperatorReturnsArguments() {
         UnOp expectedA = new UnOp(Kata.ARGUMENT, 0);
         UnOp expectedB = new UnOp(Kata.ARGUMENT, 1);
         BinOp expectedAst = new BinOp("+", expectedA, expectedB);
-        Assert.assertEquals(expectedAst, new Kata().pass1("[x y] x + y"));
+        assertEquals(expectedAst, new Kata().pass1("[x y] x + y"));
     }
 
     @Test
-    public void testBinaryOperatorComplexFunctionBody() throws Exception {
+    public void testBinaryOperatorComplexFunctionBody() {
         BinOp expectedAst = new BinOp("/", new BinOp("+", new UnOp(Kata.ARGUMENT, 0), new UnOp(Kata.ARGUMENT, 1)), new UnOp(Kata.IMMEDIATE, 2));
-        Assert.assertEquals(expectedAst, new Kata().pass1("[ x y ] ( x + y ) / 2"));
+        assertEquals(expectedAst, new Kata().pass1("[ x y ] ( x + y ) / 2"));
     }
 
     @Test
-    public void testASTSimplification() throws Exception {
+    public void testASTSimplification() {
         BinOp expectedAst = new BinOp("+", new UnOp("arg", 0), new UnOp(Kata.IMMEDIATE, 10));
         Kata kata = new Kata();
-        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[ x ] x + 2 * 5")));
+        assertEquals(expectedAst, kata.pass2(kata.pass1("[ x ] x + 2 * 5")));
     }
 
     @Test
-    public void testUnaryOperatorWithOneImmutableValueSimplified() throws Exception {
+    public void testUnaryOperatorWithOneImmutableValueSimplified() {
         UnOp expectedAst = new UnOp(Kata.IMMEDIATE, 1);
         Kata kata = new Kata();
-        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[] 1")));
+        assertEquals(expectedAst, kata.pass2(kata.pass1("[] 1")));
     }
 
     @Test
-    public void testUnaryOperatorWithOneArgumentReturnsConstantSimplified() throws Exception {
+    public void testUnaryOperatorWithOneArgumentReturnsConstantSimplified() {
         UnOp expectedAst = new UnOp(Kata.IMMEDIATE, 1);
         Kata kata = new Kata();
-        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[x] 1")));
+        assertEquals(expectedAst, kata.pass2(kata.pass1("[x] 1")));
     }
 
     @Test
-    public void testUnaryOperatorWithOneArgumentReturnsSameArgumentSimplified() throws Exception {
+    public void testUnaryOperatorWithOneArgumentReturnsSameArgumentSimplified() {
         UnOp expectedAst = new UnOp(Kata.ARGUMENT, 0);
         Kata kata = new Kata();
-        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[x] x")));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testUnaryOperatorWithOneIllegalArgumentSimplified() throws Exception {
-        Kata kata = new Kata();
-        kata.pass2(kata.pass1("[x] y"));
+        assertEquals(expectedAst, kata.pass2(kata.pass1("[x] x")));
     }
 
     @Test
-    public void testBinaryOperatorReturnsConstantSimplified() throws Exception {
+    public void testUnaryOperatorWithOneIllegalArgumentSimplified() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Kata kata = new Kata();
+            kata.pass2(kata.pass1("[x] y"));
+        });
+    }
+
+    @Test
+    public void testBinaryOperatorReturnsConstantSimplified() {
         UnOp expectedAst = new UnOp(Kata.IMMEDIATE, 3);
         Kata kata = new Kata();
-        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[x y] 1 + 2")));
+        assertEquals(expectedAst, kata.pass2(kata.pass1("[x y] 1 + 2")));
     }
 
     @Test
-    public void testBinaryOperatorReturnsArgumentsSimplified() throws Exception {
+    public void testBinaryOperatorReturnsArgumentsSimplified() {
         UnOp expectedA = new UnOp(Kata.ARGUMENT, 0);
         UnOp expectedB = new UnOp(Kata.ARGUMENT, 1);
         BinOp expectedAst = new BinOp("+", expectedA, expectedB);
         Kata kata = new Kata();
-        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[x y] x + y")));
+        assertEquals(expectedAst, kata.pass2(kata.pass1("[x y] x + y")));
     }
 
     @Test
-    public void testBinaryOperatorComplexFunctionBodySimplified() throws Exception {
+    public void testBinaryOperatorComplexFunctionBodySimplified() {
         BinOp expectedAst = new BinOp("/", new BinOp("+", new UnOp(Kata.ARGUMENT, 0), new UnOp(Kata.ARGUMENT, 1)), new UnOp(Kata.IMMEDIATE, 2));
         Kata kata = new Kata();
-        Assert.assertEquals(expectedAst, kata.pass2(kata.pass1("[ x y ] ( x + y ) / 2")));
+        assertEquals(expectedAst, kata.pass2(kata.pass1("[ x y ] ( x + y ) / 2")));
     }
 
     @Test
-    public void testUnaryOperatorWithOneImmutableValueExecuted() throws Exception {
+    public void testUnaryOperatorWithOneImmutableValueExecuted() {
         String function = "[] 1";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
-        Assert.assertEquals(1, Simulator.simulate(asm));
+        assertEquals(1, Simulator.simulate(asm));
     }
 
     @Test
-    public void testUnaryOperatorWithOneArgumentReturnsSameArgumentExecuted() throws Exception {
+    public void testUnaryOperatorWithOneArgumentReturnsSameArgumentExecuted() {
         String function = "[x] x";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
-        Assert.assertEquals(2, Simulator.simulate(asm, 2));
+        assertEquals(2, Simulator.simulate(asm, 2));
     }
 
     @Test
-    public void testBinaryOperatorReturnsConstantExecuted() throws Exception {
+    public void testBinaryOperatorReturnsConstantExecuted() {
         String function = "[] 1 + 2";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
-        Assert.assertEquals(3, Simulator.simulate(asm));
+        assertEquals(3, Simulator.simulate(asm));
     }
 
     @Test
-    public void testBinaryOperatorReturnsArgumentsExecuted() throws Exception {
+    public void testBinaryOperatorReturnsArgumentsExecuted() {
         String function = "[x y] x + y";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
-        Assert.assertEquals(7, Simulator.simulate(asm, 3, 4));
+        assertEquals(7, Simulator.simulate(asm, 3, 4));
     }
 
     @Test
-    public void testBinaryOperatorReturnsOneIntermediatePlusOneArgumentsExecuted() throws Exception {
+    public void testBinaryOperatorReturnsOneIntermediatePlusOneArgumentsExecuted() {
         String function = "[x] x + 2";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
-        Assert.assertEquals(5, Simulator.simulate(asm, 3));
+        assertEquals(5, Simulator.simulate(asm, 3));
     }
 
     @Test
-    public void testBinaryOperatorReturnsOneArgumentMinusOneIntermediateExecuted() throws Exception {
+    public void testBinaryOperatorReturnsOneArgumentMinusOneIntermediateExecuted() {
         String function = "[x] x - 2";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
-        Assert.assertEquals(1, Simulator.simulate(asm, 3));
+        assertEquals(1, Simulator.simulate(asm, 3));
     }
 
     @Test
-    public void testBinaryOperatorReturnsOneIntermediateMinusOneArgumentsExecuted() throws Exception {
+    public void testBinaryOperatorReturnsOneIntermediateMinusOneArgumentsExecuted() {
         String function = "[x] 2 - x";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
-        Assert.assertEquals(-1, Simulator.simulate(asm, 3));
+        assertEquals(-1, Simulator.simulate(asm, 3));
     }
 
     @Test
-    public void testBinaryOperatorComplexFunctionBodyExecuted() throws Exception {
+    public void testBinaryOperatorComplexFunctionBodyExecuted() {
         String function = "[ x y ] ( x + y ) / 2";
         Kata kata = new Kata();
         List<String> asm = kata.pass3(kata.pass2(kata.pass1(function)));
-        Assert.assertEquals(5, Simulator.simulate(asm, 6, 4));
+        assertEquals(5, Simulator.simulate(asm, 6, 4));
     }
 }

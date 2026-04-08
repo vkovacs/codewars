@@ -1,15 +1,18 @@
 package hu.crs.codewars.fivekyu.funwithliststreesedition;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 
 public class FunWithListsTreesEditionTest {
     @Test
     public void nullList() {
-        Assert.assertThat(FunWithListsTreesEdition.flatten(null), nullValue());
+        assertThat(FunWithListsTreesEdition.flatten(null), is(nullValue()));
     }
 
     @Test
@@ -21,6 +24,6 @@ public class FunWithListsTreesEditionTest {
 
         ListNode head = new ListNode(t1, new ListNode(t2, new ListNode(t3, new ListNode(t4))));
         TreeNode expected = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3, new TreeNode(6), null));
-        Assert.assertThat(FunWithListsTreesEdition.flatten(head), is(expected));
+        assertThat(FunWithListsTreesEdition.flatten(head), is(expected));
     }
 }

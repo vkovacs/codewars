@@ -1,8 +1,11 @@
 package hu.crs.codewars.fourkyu.validbraces;
 
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KataTest {
 
@@ -10,16 +13,16 @@ public class KataTest {
 
     @Test
     public void testValid() {
-        assertEquals(true, checker.isValid("()"));
+        assertTrue(checker.isValid("()"));
     }
 
     @Test
     public void testInvalid0() {
-        assertEquals(false, checker.isValid("[(])"));
+        assertFalse(checker.isValid("[(])"));
     }
 
     @Test
     public void testInvalid1() {
-        assertEquals(false, checker.isValid("(((({{"));
+        assertFalse(checker.isValid("(((({{"));
     }
 }

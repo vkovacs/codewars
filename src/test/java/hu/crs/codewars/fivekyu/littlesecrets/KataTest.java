@@ -1,17 +1,23 @@
 package hu.crs.codewars.fivekyu.littlesecrets;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KataTest {
 
     @Test
     public void valid() throws NoSuchFieldException, IllegalAccessException {
-        Assert.assertEquals("netVeryWellProtected",Kata.guess("secret"));
+        assertEquals("netVeryWellProtected",Kata.guess("secret"));
     }
 
-    @Test(expected = NoSuchFieldException.class)
+    @Test
     public void exception() throws NoSuchFieldException, IllegalAccessException {
-        Assert.assertEquals("netVeryWellProtected",Kata.guess("nosuchfields"));
+        Assertions.assertThrows(NoSuchFieldException.class, () -> {
+            assertEquals("netVeryWellProtected",Kata.guess("nosuchfields"));
+        });
+
     }
 }
